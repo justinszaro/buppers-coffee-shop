@@ -1,16 +1,19 @@
-import { Button } from "~/components/ui/button"
+import { NavBar } from "~/components/nav-bar"
+import { Footer } from "~/components/footer"
+import { Hero } from "~/components/home/hero"
+import { CoffeeOfMonth } from "~/components/home/coffee-of-month"
+import { BeansSection } from "~/components/home/beans-section"
+import { AboutSection } from "~/components/home/about-section"
 
 export default function Home() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-      </div>
+    <div className="bg-paper min-h-screen">
+      <NavBar active="home" />
+      <Hero />
+      <CoffeeOfMonth />
+      <BeansSection />
+      <AboutSection />
+      <Footer />
     </div>
   )
 }
