@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { cn } from "~/lib/utils"
 import { OrderCard } from "~/components/admin/order-card"
 import { advance } from "~/lib/order-store"
 import type { Order } from "~/lib/order-store"
@@ -10,11 +11,11 @@ const COLS: [string, string][] = [
   ["done", "Picked up"],
 ]
 
-const DOT_COLOR: Record<string, string> = {
-  new: "#c54b42",
-  brewing: "#c98a3c",
-  ready: "#3f8d6e",
-  done: "#6b6b72",
+const DOT_CLASS: Record<string, string> = {
+  new: "bg-buppers-red",
+  brewing: "bg-amber",
+  ready: "bg-buppers-green",
+  done: "bg-buppers-muted",
 }
 
 export function Board({ orders }: { orders: Order[] }) {
@@ -26,7 +27,7 @@ export function Board({ orders }: { orders: Order[] }) {
   }
 
   return (
-    <div className="grid gap-[18px] items-start" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
+    <div className="grid grid-cols-4 gap-[18px] items-start">
       {COLS.map(([key, label]) => {
         const list = orders
           .filter((o) => o.status === key)
@@ -35,14 +36,13 @@ export function Board({ orders }: { orders: Order[] }) {
         return (
           <div
             key={key}
-            className="rounded-[16px] p-[6px]"
-            style={{ background: key === "done" ? "transparent" : "rgba(255,255,255,.4)" }}
+            className={cn(
+              "rounded-[16px] p-[6px]",
+              key === "done" ? "bg-transparent" : "bg-white/40",
+            )}
           >
             <div className="flex items-center gap-2 px-[10px] pt-[6px] pb-3">
-              <span
-                className="w-2 h-2 rounded-full shrink-0"
-                style={{ background: DOT_COLOR[key] }}
-              />
+              <span className={cn("w-2 h-2 rounded-full shrink-0", DOT_CLASS[key])} />
               <span className="font-heading font-semibold text-[14.5px] text-ink">
                 {label}
               </span>
@@ -51,10 +51,7 @@ export function Board({ orders }: { orders: Order[] }) {
               </span>
             </div>
 
-            <div
-              className="flex flex-col gap-3"
-              style={{ opacity: key === "done" ? 0.62 : 1 }}
-            >
+            <div className={cn("flex flex-col gap-3", key === "done" && "opacity-[0.62]")}>
               {list.length === 0 && (
                 <div className="font-sans text-[12.5px] text-buppers-muted text-center py-6">
                   —

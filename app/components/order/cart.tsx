@@ -1,5 +1,8 @@
 import { useState } from "react"
 import { Button } from "~/components/ui/button"
+import { Card } from "~/components/ui/card"
+import { Input } from "~/components/ui/input"
+import { Separator } from "~/components/ui/separator"
 import { DuoMark } from "~/components/duo-mark"
 import { Stepper } from "~/components/stepper"
 import { addOrder } from "~/lib/order-store"
@@ -33,9 +36,8 @@ export function Cart({
     )
 
   return (
-    <div
-      className="sticky top-[94px] bg-white rounded-[20px] border border-line overflow-hidden"
-      style={{ boxShadow: "var(--shadow-brand)" }}
+    <Card
+      className="sticky top-[94px] rounded-[20px] border border-line ring-0 overflow-hidden [--card-spacing:0px] shadow-[var(--shadow-brand)]"
     >
       {/* Header */}
       <div className="px-[22px] py-5 border-b border-line flex items-center gap-[10px]">
@@ -60,22 +62,22 @@ export function Cart({
             </p>
           </div>
         ) : (
-          items.map((i) => (
-            <div
-              key={i.uid}
-              className="px-[22px] py-4 border-b border-line-soft flex gap-3"
-            >
-              <div className="flex-1 min-w-0">
-                <div className="font-heading font-semibold text-[15.5px] text-ink">
-                  {i.name}
-                </div>
-                <div className="font-sans text-[12.5px] text-buppers-muted mt-0.5 leading-[1.4]">
-                  {i.detail}
-                </div>
-                <div className="mt-[9px]">
-                  <Stepper value={i.qty} onChange={(q) => setQty(i.uid, q)} min={0} />
+          items.map((i, idx) => (
+            <div key={i.uid}>
+              <div className="px-[22px] py-4 flex gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="font-heading font-semibold text-[15.5px] text-ink">
+                    {i.name}
+                  </div>
+                  <div className="font-sans text-[12.5px] text-buppers-muted mt-0.5 leading-[1.4]">
+                    {i.detail}
+                  </div>
+                  <div className="mt-[9px]">
+                    <Stepper value={i.qty} onChange={(q) => setQty(i.uid, q)} min={0} />
+                  </div>
                 </div>
               </div>
+              {idx < items.length - 1 && <Separator className="bg-line-soft" />}
             </div>
           ))
         )}
@@ -84,11 +86,11 @@ export function Cart({
       {/* Place order */}
       {items.length > 0 && (
         <div className="px-[22px] pt-[18px] pb-[22px]">
-          <input
+          <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name for the order"
-            className="w-full box-border mb-3 font-sans text-[15px] px-[14px] py-3 rounded-[11px] border border-line outline-none bg-paper"
+            className="mb-3 font-sans text-[15px] rounded-[11px] border-line bg-paper h-auto py-3"
           />
           <Button
             className="w-full bg-teal text-white rounded-full font-semibold text-base px-[26px] py-[14px] h-auto border-none hover:bg-teal-deep"
@@ -101,6 +103,6 @@ export function Cart({
           </p>
         </div>
       )}
-    </div>
+    </Card>
   )
 }

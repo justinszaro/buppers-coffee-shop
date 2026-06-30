@@ -142,7 +142,7 @@ export function DuoMark({ size = 40, variant = "color" }: DuoMarkProps) {
       width={w}
       height={size}
       viewBox="16 4 190 112"
-      style={{ display: "block", overflow: "visible" }}
+      className="block overflow-visible"
       xmlns="http://www.w3.org/2000/svg"
     >
       {Bear}

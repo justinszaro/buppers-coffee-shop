@@ -9,19 +9,17 @@ const VALUES: [string, string][] = [
 
 export function AboutSection() {
   return (
-    <section className="mx-auto px-7 pt-[76px] pb-[84px]" style={{ maxWidth: 1160 }}>
-      <div className="grid gap-14 items-center" style={{ gridTemplateColumns: "1fr 1fr" }}>
+    <section className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-[84px]">
+      <div className="grid grid-cols-2 gap-14 items-center">
         {/* Photo */}
         <div className="relative">
           <img
             src="/img-stairs.jpg"
             alt="Down the basement stairs"
-            className="w-full object-cover rounded-[20px] block"
-            style={{ height: 400, boxShadow: "var(--shadow-brand-sm)" }}
+            className="w-full object-cover rounded-[20px] block h-[400px] shadow-[var(--shadow-brand-sm)]"
           />
           <div
-            className="absolute bg-teal-wash rounded-[18px] p-[18px]"
-            style={{ right: -22, top: -22, boxShadow: "var(--shadow-brand-sm)" }}
+            className="absolute bg-teal-wash rounded-[18px] p-[18px] -right-[22px] -top-[22px] shadow-[var(--shadow-brand-sm)]"
           >
             <DuoMark size={64} variant="color" />
           </div>

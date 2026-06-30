@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Badge } from "~/components/badge"
 import type { DrinkDef } from "~/lib/menu-data"
 
@@ -12,8 +11,8 @@ function DrinkThumb({ tone, size = 66 }: { tone: string; size?: number }) {
   const cls = drinkThumbClass[tone] ?? drinkThumbClass.cream
   return (
     <div
-      className={`rounded-[12px] shrink-0 ${cls}`}
-      style={{ width: size, height: size }}
+      className={`rounded-[12px] shrink-0 w-(--drink-thumb-size) h-(--drink-thumb-size) ${cls}`}
+      style={{ "--drink-thumb-size": `${size}px` } as React.CSSProperties}
     />
   )
 }
@@ -25,17 +24,10 @@ export function DrinkCard({
   drink: DrinkDef
   onSelect: () => void
 }) {
-  const [hovered, setHovered] = useState(false)
   return (
     <button
       onClick={onSelect}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="text-left cursor-pointer bg-white border border-line rounded-[18px] p-5 flex gap-4 transition-[transform,box-shadow] duration-[120ms]"
-      style={{
-        boxShadow: hovered ? "var(--shadow-brand)" : "var(--shadow-brand-sm)",
-        transform: hovered ? "translateY(-3px)" : "none",
-      }}
+      className="text-left cursor-pointer bg-white border border-line rounded-[18px] p-5 flex gap-4 transition-[transform,box-shadow] duration-[120ms] shadow-[var(--shadow-brand-sm)] hover:shadow-[var(--shadow-brand)] hover:-translate-y-[3px]"
     >
       <DrinkThumb tone={drink.tone} />
       <div className="flex-1 min-w-0">

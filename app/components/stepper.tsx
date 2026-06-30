@@ -1,3 +1,5 @@
+import { Button } from "~/components/ui/button"
+
 export function Stepper({
   value,
   onChange,
@@ -9,21 +11,25 @@ export function Stepper({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <button
-        className="w-[30px] h-[30px] rounded-lg border border-line bg-white cursor-pointer text-[17px] text-ink flex items-center justify-center leading-none"
+      <Button
+        variant="outline"
+        size="icon-sm"
+        className="rounded-lg border-line bg-white text-[17px] leading-none"
         onClick={() => onChange(Math.max(min, value - 1))}
       >
         –
-      </button>
+      </Button>
       <span className="font-heading font-semibold text-base min-w-[18px] text-center">
         {value}
       </span>
-      <button
-        className="w-[30px] h-[30px] rounded-lg border border-line bg-white cursor-pointer text-[17px] text-ink flex items-center justify-center leading-none"
+      <Button
+        variant="outline"
+        size="icon-sm"
+        className="rounded-lg border-line bg-white text-[17px] leading-none"
         onClick={() => onChange(value + 1)}
       >
         +
-      </button>
+      </Button>
     </div>
   )
 }

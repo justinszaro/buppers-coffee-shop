@@ -6,7 +6,10 @@ import { DrinkCard } from "~/components/order/drink-card"
 import { Customizer } from "~/components/order/customizer"
 import { Cart } from "~/components/order/cart"
 import { Confirm } from "~/components/order/confirm"
-import { DRINKS, CURRENT_BEAN } from "~/lib/menu-data"
+import { useDrinks } from "~/hooks/use-drinks"
+import { useBeans } from "~/hooks/use-beans"
+import { useMilks } from "~/hooks/use-milks"
+import { useAddons } from "~/hooks/use-addons"
 import type { DrinkDef } from "~/lib/menu-data"
 import type { CartItem, PlacedOrder } from "~/lib/order-store"
 
@@ -14,6 +17,33 @@ export default function Order() {
   const [items, setItems] = useState<CartItem[]>([])
   const [active, setActive] = useState<DrinkDef | null>(null)
   const [placed, setPlaced] = useState<PlacedOrder | null>(null)
+
+  const { drinks: apiDrinks, loading: drinksLoading } = useDrinks()
+  const { beans, loading: beansLoading } = useBeans()
+  const { milks: apiMilks, loading: milksLoading } = useMilks()
+  const { addons: apiAddons, loading: addonsLoading } = useAddons()
+
+  const currentBean = beans.find((b) => b.active)
+  const beanName = currentBean?.name ?? "this week's bean"
+
+  const drinks: DrinkDef[] = apiDrinks.map((d) => ({
+    id: String(d.drinkId),
+    name: d.name,
+    tone: "cream",
+    milk: true,
+    seasonal: d.featured,
+    desc: d.description,
+  }))
+
+  const milkOptions = apiMilks
+    .filter((m) => m.active)
+    .map((m) => ({ id: String(m.milkId), label: m.name }))
+
+  const extraOptions = apiAddons
+    .filter((a) => a.active)
+    .map((a) => ({ id: String(a.addonId), label: a.name }))
+
+  const loading = drinksLoading || beansLoading || milksLoading || addonsLoading
 
   if (placed) {
     return (
@@ -39,20 +69,24 @@ export default function Order() {
         </h1>
         <p className="font-sans text-base text-buppers-muted m-0">
           Pick a drink, make it yours, and skip the line. Everything&apos;s
-          made with this week&apos;s bean — {CURRENT_BEAN.name}.
+          made with this week&apos;s bean — {beanName}.
         </p>
       </div>
 
       {/* Drink grid + cart */}
-      <div
-        className="max-w-[1160px] mx-auto px-7 pb-20 grid gap-8 items-start"
-        style={{ gridTemplateColumns: "1fr 372px" }}
-      >
+      <div className="max-w-[1160px] mx-auto px-7 pb-20 grid grid-cols-[1fr_372px] gap-8 items-start">
         {/* Drinks grid */}
         <div className="grid grid-cols-2 gap-[18px]">
-          {DRINKS.map((d) => (
-            <DrinkCard key={d.id} drink={d} onSelect={() => setActive(d)} />
-          ))}
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white border border-line rounded-[18px] p-5 h-[106px] animate-pulse"
+                />
+              ))
+            : drinks.map((d) => (
+                <DrinkCard key={d.id} drink={d} onSelect={() => setActive(d)} />
+              ))}
         </div>
 
         {/* Cart */}
@@ -63,6 +97,9 @@ export default function Order() {
       {active && (
         <Customizer
           drink={active}
+          milkOptions={milkOptions}
+          extraOptions={extraOptions}
+          beanName={beanName}
           onClose={() => setActive(null)}
           onAdd={(it) => {
             setItems((a) => [...a, it])

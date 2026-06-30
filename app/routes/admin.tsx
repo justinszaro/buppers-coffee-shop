@@ -1,14 +1,15 @@
-import { useState } from "react"
 import { NavBar } from "~/components/nav-bar"
 import { Eyebrow } from "~/components/eyebrow"
+import { Button } from "~/components/ui/button"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
 import { StatCard } from "~/components/admin/stat-card"
 import { Board } from "~/components/admin/board"
 import { RecipeBook } from "~/components/admin/recipe-book"
 import { useOrders, simulateOrder } from "~/lib/order-store"
+import { useState } from "react"
 
 export default function Admin() {
   const orders = useOrders()
-  const [tab, setTab] = useState<"orders" | "recipes">("orders")
   const [, forceRender] = useState(0)
 
   const startOfDay = new Date()
@@ -22,11 +23,6 @@ export default function Admin() {
     simulateOrder()
     forceRender((n) => n + 1)
   }
-
-  const TABS: ["orders" | "recipes", string][] = [
-    ["orders", "Order board"],
-    ["recipes", "Recipe book"],
-  ]
 
   return (
     <div className="bg-paper min-h-screen">
@@ -43,12 +39,14 @@ export default function Admin() {
           </div>
 
           <div className="flex gap-[10px] items-center">
-            <button
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full font-semibold text-[13.5px] text-ink-soft border-line"
               onClick={handleSimulate}
-              className="font-sans font-semibold text-[13.5px] cursor-pointer rounded-full px-4 py-2 bg-transparent text-ink-soft border border-line"
             >
               + Simulate order
-            </button>
+            </Button>
             <div className="flex items-center gap-[7px] font-sans text-[13px] rounded-full px-[14px] py-2 bg-[#dff0e8] text-buppers-green">
               <span className="w-[7px] h-[7px] rounded-full bg-buppers-green animate-bpulse" />
               Live
@@ -66,28 +64,33 @@ export default function Admin() {
       </div>
 
       {/* Tabs */}
-      <div className="max-w-[1240px] mx-auto px-7 pt-2 pb-0">
-        <div className="flex gap-1 border-b border-line">
-          {TABS.map(([k, l]) => (
-            <button
-              key={k}
-              onClick={() => setTab(k)}
-              className="font-sans font-semibold text-[15px] cursor-pointer border-none bg-transparent px-[18px] py-[14px] -mb-px"
-              style={{
-                color: tab === k ? "#00786f" : "#6b6b72",
-                borderBottom: `2px solid ${tab === k ? "#00786f" : "transparent"}`,
-              }}
+      <Tabs defaultValue="orders" className="max-w-[1240px] mx-auto px-7 gap-0">
+        <div className="border-b border-line pt-2">
+          <TabsList
+            variant="line"
+            className="w-full rounded-none justify-start h-auto bg-transparent p-0"
+          >
+            <TabsTrigger
+              value="orders"
+              className="px-[18px] py-[14px] rounded-none font-sans font-semibold text-[15px] border-0 border-b-2 border-b-transparent -mb-px data-[state=active]:text-teal data-[state=active]:border-b-teal data-[state=active]:bg-transparent data-[state=active]:shadow-none"
             >
-              {l}
-            </button>
-          ))}
+              Order board
+            </TabsTrigger>
+            <TabsTrigger
+              value="recipes"
+              className="px-[18px] py-[14px] rounded-none font-sans font-semibold text-[15px] border-0 border-b-2 border-b-transparent -mb-px data-[state=active]:text-teal data-[state=active]:border-b-teal data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+            >
+              Recipe book
+            </TabsTrigger>
+          </TabsList>
         </div>
-      </div>
-
-      {/* Tab content */}
-      <div className="max-w-[1240px] mx-auto px-7 pt-7 pb-20">
-        {tab === "orders" ? <Board orders={orders} /> : <RecipeBook />}
-      </div>
+        <TabsContent value="orders" className="pt-7 pb-20 mt-0">
+          <Board orders={orders} />
+        </TabsContent>
+        <TabsContent value="recipes" className="pt-7 pb-20 mt-0">
+          <RecipeBook />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
