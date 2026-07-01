@@ -18,12 +18,12 @@ export default function Order() {
   const [active, setActive] = useState<DrinkDef | null>(null)
   const [placed, setPlaced] = useState<PlacedOrder | null>(null)
 
-  const { drinks: apiDrinks, loading: drinksLoading } = useDrinks()
-  const { beans, loading: beansLoading } = useBeans()
-  const { milks: apiMilks, loading: milksLoading } = useMilks()
-  const { addons: apiAddons, loading: addonsLoading } = useAddons()
+  const { data: apiDrinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100 })
+  const { data: beans, isLoading: beansLoading } = useBeans({ active: true, $limit: 1 })
+  const { data: apiMilks, isLoading: milksLoading } = useMilks({ $limit: 100 })
+  const { data: apiAddons, isLoading: addonsLoading } = useAddons({ $limit: 100 })
 
-  const currentBean = beans.find((b) => b.active)
+  const currentBean = beans?.[0]
   const beanName = currentBean?.name ?? "this week's bean"
 
   const drinks: DrinkDef[] = apiDrinks.map((d) => ({

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { client } from '~/lib/feathers-client'
 
 export interface Drink {
@@ -11,26 +11,43 @@ export interface Drink {
   updatedAt: string
 }
 
-export function useDrinks() {
-  const [drinks, setDrinks] = useState<Drink[]>([])
-  const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+export function useDrinks(query: Record<string, unknown> = {}) {
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    client
-      .service('drinks')
-      .find({ query: { active: true, $limit: 100 } })
-      .then((result: { total: number; data: Drink[]; skip: number; limit: number }) => {
-        setDrinks(result.data)
-        setTotal(result.total)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        setError(err)
-        setLoading(false)
-      })
-  }, [])
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['drinks', query],
+    queryFn: async () => {
+      const response = await client.service('buppers/drinks').find({ query })
+      return response as { data: Drink[]; total: number }
+    },
+  })
 
-  return { drinks, total, loading, error }
+  const mutator = useMutation({
+    mutationFn: (drink: { drinkId?: number; [key: string]: unknown }) => {
+      if (drink.drinkId) {
+        const { drinkId, ...fields } = drink
+        return client.service('buppers/drinks').patch(drinkId, fields)
+      }
+      return client.service('buppers/drinks').create(drink)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'drinks' })
+    },
+  })
+
+  const remover = useMutation({
+    mutationFn: (drinkId: number) => client.service('buppers/drinks').remove(drinkId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'drinks' })
+    },
+  })
+
+  return {
+    data: data?.data,
+    total: data?.total,
+    isLoading,
+    error,
+    mutator,
+    remover,
+  }
 }

@@ -3,10 +3,9 @@ import { Badge } from "~/components/badge"
 import { useBeans } from "~/hooks/use-beans"
 
 export function BeansSection() {
-  const { beans, loading } = useBeans()
+  const { data: beans, isLoading: loading } = useBeans({ active: true, $limit: 1 })
 
-  const currentBean = beans.find((b) => b.active)
-  const nextBean = beans.find((b) => b.onDeck)
+  const currentBean = beans?.[0]
   const notes = currentBean?.notes
     .split(",")
     .map((n) => n.trim())
@@ -70,16 +69,6 @@ export function BeansSection() {
               </div>
             )}
 
-            {nextBean && (
-              <div className="pt-[22px] border-t border-line-soft">
-                <div className="font-sans text-[11.5px] font-bold tracking-[0.1em] uppercase text-buppers-muted mb-[7px]">
-                  Up next
-                </div>
-                <div className="font-heading font-semibold text-[15px] text-ink pt-1">
-                  {nextBean.name}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       ) : null}

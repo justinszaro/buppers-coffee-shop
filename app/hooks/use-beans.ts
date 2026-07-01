@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { client } from '~/lib/feathers-client'
 
 export interface Bean {
@@ -14,24 +14,43 @@ export interface Bean {
   updatedAt: string
 }
 
-export function useBeans() {
-  const [beans, setBeans] = useState<Bean[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+export function useBeans(query: Record<string, unknown> = {}) {
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    client
-      .service('beans')
-      .find({ query: { $limit: 100 } })
-      .then((result: { total: number; data: Bean[]; skip: number; limit: number }) => {
-        setBeans(result.data)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        setError(err)
-        setLoading(false)
-      })
-  }, [])
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['beans', query],
+    queryFn: async () => {
+      const response = await client.service('buppers/beans').find({ query })
+      return response as { data: Bean[]; total: number }
+    },
+  })
 
-  return { beans, loading, error }
+  const mutator = useMutation({
+    mutationFn: (bean: { beanId?: number; [key: string]: unknown }) => {
+      if (bean.beanId) {
+        const { beanId, ...fields } = bean
+        return client.service('buppers/beans').patch(beanId, fields)
+      }
+      return client.service('buppers/beans').create(bean)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'beans' })
+    },
+  })
+
+  const remover = useMutation({
+    mutationFn: (beanId: number) => client.service('buppers/beans').remove(beanId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'beans' })
+    },
+  })
+
+  return {
+    data: data?.data,
+    total: data?.total,
+    isLoading,
+    error,
+    mutator,
+    remover,
+  }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { client } from '~/lib/feathers-client'
 
 export type OrderStatus = 'ordered' | 'brewing' | 'ready-for-pickup' | 'complete'
@@ -13,72 +13,44 @@ export interface ApiOrder {
   updatedAt: string
 }
 
-export interface CreateOrderData {
-  drinkId: number
-  milkId?: number | null
-  name: string
-  status?: OrderStatus
-}
+export function useApiOrders(query: Record<string, unknown> = {}) {
+  const queryClient = useQueryClient()
 
-export interface PatchOrderData {
-  status?: OrderStatus
-  drinkId?: number
-  milkId?: number | null
-  name?: string
-}
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['orders', query],
+    queryFn: async () => {
+      const response = await client.service('buppers/orders').find({ query })
+      return response as { data: ApiOrder[]; total: number }
+    },
+    refetchInterval: 5000,
+  })
 
-const POLL_INTERVAL = 5000
+  const mutator = useMutation({
+    mutationFn: (order: { orderId?: number; [key: string]: unknown }) => {
+      if (order.orderId) {
+        const { orderId, ...fields } = order
+        return client.service('buppers/orders').patch(orderId, fields)
+      }
+      return client.service('buppers/orders').create(order)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'orders' })
+    },
+  })
 
-export function useApiOrders() {
-  const [orders, setOrders] = useState<ApiOrder[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const remover = useMutation({
+    mutationFn: (orderId: number) => client.service('buppers/orders').remove(orderId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'orders' })
+    },
+  })
 
-  const fetchOrders = useCallback(() => {
-    return client
-      .service('orders')
-      .find({ query: { $limit: 200, $sort: { createdAt: -1 } } })
-      .then((result: { total: number; data: ApiOrder[]; skip: number; limit: number }) => {
-        setOrders(result.data)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        setError(err)
-        setLoading(false)
-      })
-  }, [])
-
-  useEffect(() => {
-    fetchOrders()
-    const iv = setInterval(fetchOrders, POLL_INTERVAL)
-    return () => clearInterval(iv)
-  }, [fetchOrders])
-
-  const createOrder = useCallback(async (data: CreateOrderData): Promise<ApiOrder> => {
-    const order = await client.service('orders').create(data)
-    await fetchOrders()
-    return order as ApiOrder
-  }, [fetchOrders])
-
-  const patchOrder = useCallback(async (orderId: number, data: PatchOrderData): Promise<ApiOrder> => {
-    const order = await client.service('orders').patch(orderId, data)
-    setOrders(prev => prev.map(o => (o.orderId === orderId ? (order as ApiOrder) : o)))
-    return order as ApiOrder
-  }, [])
-
-  const advanceOrder = useCallback(async (orderId: number) => {
-    const STATUS_NEXT: Record<OrderStatus, OrderStatus | null> = {
-      ordered: 'brewing',
-      brewing: 'ready-for-pickup',
-      'ready-for-pickup': 'complete',
-      complete: null,
-    }
-    const order = orders.find(o => o.orderId === orderId)
-    if (!order) return
-    const next = STATUS_NEXT[order.status]
-    if (!next) return
-    await patchOrder(orderId, { status: next })
-  }, [orders, patchOrder])
-
-  return { orders, loading, error, createOrder, patchOrder, advanceOrder, refresh: fetchOrders }
+  return {
+    data: data?.data,
+    total: data?.total,
+    isLoading,
+    error,
+    mutator,
+    remover,
+  }
 }

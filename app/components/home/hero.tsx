@@ -8,12 +8,13 @@ import { useDrinks } from "~/hooks/use-drinks"
 import { client } from "~/lib/feathers-client"
 
 export function Hero() {
-  const { total: activeDrinks } = useDrinks()
+  const { data: drinks } = useDrinks({ active: true, $limit: 100 })
+  const activeDrinks = drinks?.length ?? 0
   const [drinksServed, setDrinksServed] = useState<number | null>(null)
 
   useEffect(() => {
     client
-      .service("orders")
+      .service("buppers/orders")
       .find({ query: { status: "complete", $limit: 0 } })
       .then((result: { total: number }) => setDrinksServed(result.total))
       .catch(() => {})

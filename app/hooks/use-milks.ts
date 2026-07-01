@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { client } from '~/lib/feathers-client'
 
 export interface Milk {
@@ -10,24 +10,43 @@ export interface Milk {
   updatedAt: string
 }
 
-export function useMilks() {
-  const [milks, setMilks] = useState<Milk[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+export function useMilks(query: Record<string, unknown> = {}) {
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    client
-      .service('milks')
-      .find({ query: { $limit: 100 } })
-      .then((result: { total: number; data: Milk[]; skip: number; limit: number }) => {
-        setMilks(result.data)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        setError(err)
-        setLoading(false)
-      })
-  }, [])
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['milks', query],
+    queryFn: async () => {
+      const response = await client.service('buppers/milks').find({ query })
+      return response as { data: Milk[]; total: number }
+    },
+  })
 
-  return { milks, loading, error }
+  const mutator = useMutation({
+    mutationFn: (milk: { milkId?: number; [key: string]: unknown }) => {
+      if (milk.milkId) {
+        const { milkId, ...fields } = milk
+        return client.service('buppers/milks').patch(milkId, fields)
+      }
+      return client.service('buppers/milks').create(milk)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'milks' })
+    },
+  })
+
+  const remover = useMutation({
+    mutationFn: (milkId: number) => client.service('buppers/milks').remove(milkId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'milks' })
+    },
+  })
+
+  return {
+    data: data?.data,
+    total: data?.total,
+    isLoading,
+    error,
+    mutator,
+    remover,
+  }
 }
