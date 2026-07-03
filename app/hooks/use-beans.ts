@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { client } from '~/lib/feathers-client'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import client from "~/lib/feathers-client"
 
 export interface Bean {
   beanId: number
@@ -18,30 +18,37 @@ export function useBeans(query: Record<string, unknown> = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['beans', query],
+    queryKey: ["beans", query],
     queryFn: async () => {
-      const response = await client.service('buppers/beans').find({ query })
+      const response = await client.service("buppers/beans").find({ query })
       return response as { data: Bean[]; total: number }
     },
   })
+
+  console.log(data)
 
   const mutator = useMutation({
     mutationFn: (bean: { beanId?: number; [key: string]: unknown }) => {
       if (bean.beanId) {
         const { beanId, ...fields } = bean
-        return client.service('buppers/beans').patch(beanId, fields)
+        return client.service("buppers/beans").patch(beanId, fields)
       }
-      return client.service('buppers/beans').create(bean)
+      return client.service("buppers/beans").create(bean)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'beans' })
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey[0] === "beans",
+      })
     },
   })
 
   const remover = useMutation({
-    mutationFn: (beanId: number) => client.service('buppers/beans').remove(beanId),
+    mutationFn: (beanId: number) =>
+      client.service("buppers/beans").remove(beanId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'beans' })
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey[0] === "beans",
+      })
     },
   })
 

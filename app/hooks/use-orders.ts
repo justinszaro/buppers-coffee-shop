@@ -1,7 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { client } from '~/lib/feathers-client'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import client from "~/lib/feathers-client"
 
-export type OrderStatus = 'ordered' | 'brewing' | 'ready-for-pickup' | 'complete'
+export type OrderStatus =
+  | "ordered"
+  | "brewing"
+  | "ready-for-pickup"
+  | "complete"
 
 export interface ApiOrder {
   orderId: number
@@ -17,9 +21,9 @@ export function useApiOrders(query: Record<string, unknown> = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['orders', query],
+    queryKey: ["orders", query],
     queryFn: async () => {
-      const response = await client.service('buppers/orders').find({ query })
+      const response = await client.service("buppers/orders").find({ query })
       return response as { data: ApiOrder[]; total: number }
     },
     refetchInterval: 5000,
@@ -29,19 +33,24 @@ export function useApiOrders(query: Record<string, unknown> = {}) {
     mutationFn: (order: { orderId?: number; [key: string]: unknown }) => {
       if (order.orderId) {
         const { orderId, ...fields } = order
-        return client.service('buppers/orders').patch(orderId, fields)
+        return client.service("buppers/orders").patch(orderId, fields)
       }
-      return client.service('buppers/orders').create(order)
+      return client.service("buppers/orders").create(order)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'orders' })
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey[0] === "orders",
+      })
     },
   })
 
   const remover = useMutation({
-    mutationFn: (orderId: number) => client.service('buppers/orders').remove(orderId),
+    mutationFn: (orderId: number) =>
+      client.service("buppers/orders").remove(orderId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] === 'orders' })
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey[0] === "orders",
+      })
     },
   })
 
