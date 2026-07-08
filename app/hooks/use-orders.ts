@@ -17,7 +17,7 @@ export interface ApiOrder {
   updatedAt: string
 }
 
-export function useApiOrders(query: Record<string, unknown> = {}) {
+export function useOrders(query: Record<string, unknown> = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({

@@ -1,30 +1,21 @@
-import { useState, useEffect } from "react"
 import { Link } from "react-router"
 import { Button } from "~/components/ui/button"
 import { Card } from "~/components/ui/card"
 import { DuoMark } from "~/components/duo-mark"
 import { Eyebrow } from "~/components/eyebrow"
 import { useDrinks } from "~/hooks/use-drinks"
-import client from "~/lib/feathers-client"
+import { useApiOrders } from "~/hooks/use-orders"
 
 export function Hero() {
   const { data: drinks } = useDrinks({ active: true, $limit: 100 })
   const activeDrinks = drinks?.length ?? 0
-  const [drinksServed, setDrinksServed] = useState<number | null>(null)
-
-  useEffect(() => {
-    client
-      .service("buppers/orders")
-      .find({ query: { status: "complete", $limit: 0 } })
-      .then((result: { total: number }) => setDrinksServed(result.total))
-      .catch(() => {})
-  }, [])
+  const { total: drinksServed } = useOrders({ status: "complete", $limit: 0 })
 
   const stats: [string, string][] = [
     ["7am–1pm", "Open daily"],
     [activeDrinks > 0 ? String(activeDrinks) : "—", "Drinks on the menu"],
     [
-      drinksServed !== null ? drinksServed.toLocaleString() : "—",
+      drinksServed != null ? drinksServed.toLocaleString() : "—",
       "Drinks served",
     ],
   ]
