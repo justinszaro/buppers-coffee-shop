@@ -4,7 +4,7 @@ import { Card } from "~/components/ui/card"
 import { DuoMark } from "~/components/duo-mark"
 import { Eyebrow } from "~/components/eyebrow"
 import { useDrinks } from "~/hooks/use-drinks"
-import { useApiOrders } from "~/hooks/use-orders"
+import { useOrders } from "~/hooks/use-orders"
 
 export function Hero() {
   const { data: drinks } = useDrinks({ active: true, $limit: 100 })

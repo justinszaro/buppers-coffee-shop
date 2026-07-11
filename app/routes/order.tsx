@@ -26,7 +26,7 @@ export default function Order() {
   const currentBean = beans?.[0]
   const beanName = currentBean?.name ?? "this week's bean"
 
-  const drinks: DrinkDef[] = apiDrinks.map((d) => ({
+  const drinks: DrinkDef[] = (apiDrinks ?? []).map((d) => ({
     id: String(d.drinkId),
     name: d.name,
     tone: "cream",
@@ -35,11 +35,11 @@ export default function Order() {
     desc: d.description,
   }))
 
-  const milkOptions = apiMilks
+  const milkOptions = (apiMilks ?? [])
     .filter((m) => m.active)
     .map((m) => ({ id: String(m.milkId), label: m.name }))
 
-  const extraOptions = apiAddons
+  const extraOptions = (apiAddons ?? [])
     .filter((a) => a.active)
     .map((a) => ({ id: String(a.addonId), label: a.name }))
 
