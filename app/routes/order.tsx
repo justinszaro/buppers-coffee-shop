@@ -13,6 +13,16 @@ import { useAddons } from "~/hooks/use-addons"
 import type { Drink } from "~/hooks/use-drinks"
 import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
+export function meta() {
+  return [
+    { title: "Order | Buppers Coffee" },
+    {
+      name: "description",
+      content: "Build your cup online and skip the line. Pick a drink, customize it, and order ahead at Buppers Coffee.",
+    },
+  ]
+}
+
 export default function Order() {
   const [items, setItems] = useState<CartItem[]>([])
   const [active, setActive] = useState<Drink | null>(null)

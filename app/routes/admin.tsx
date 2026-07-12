@@ -9,7 +9,15 @@ import { useOrders, STATUS } from "~/hooks/use-orders"
 import { useDrinks } from "~/hooks/use-drinks"
 import type { ApiOrder } from "~/hooks/use-orders"
 
-const SEED_NAMES = ["Wren", "Tobias", "Marisol", "Dev", "Priya", "Sam", "Elena", "Hugo"]
+export function meta() {
+  return [
+    { title: "Admin | Buppers Coffee" },
+    {
+      name: "description",
+      content: "Admin dashboard for managing the Buppers Coffee menu, orders, and settings.",
+    },
+  ]
+}
 
 export default function Admin() {
   const { data: apiOrders, isFetching, mutator } = useOrders({ $sort: { createdAt: -1 }, $limit: 200 })
@@ -27,15 +35,6 @@ export default function Admin() {
   const doAdvance = (order: ApiOrder) => {
     const next = STATUS[order.status]?.next
     if (next) mutator.mutate({ orderId: order.orderId, status: next })
-  }
-
-  const handleSimulate = () => {
-    const drink = drinks?.[Math.floor(Math.random() * (drinks?.length ?? 1))]
-    if (!drink) return
-    mutator.mutate({
-      drinkId: drink.drinkId,
-      name: SEED_NAMES[Math.floor(Math.random() * SEED_NAMES.length)],
-    })
   }
 
   return (
