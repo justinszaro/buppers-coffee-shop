@@ -22,7 +22,7 @@ export function BeansSection() {
         </div>
         <p className="font-sans text-[15px] text-buppers-muted max-w-[320px]">
           We keep one single origin on the bar at a time and brew everything
-          with it. New bean every Tuesday.
+          with it.
         </p>
       </div>
 
