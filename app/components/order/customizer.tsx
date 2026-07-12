@@ -67,7 +67,6 @@ export function Customizer({
   onClose: () => void
   onAdd: (item: CartItem) => void
 }) {
-  const [size, setSize] = useState("M")
   const [milk, setMilk] = useState<number>(milkOptions[0]?.milkId ?? 0)
   const [extras, setExtras] = useState<number[]>([])
   const [qty, setQty] = useState(1)

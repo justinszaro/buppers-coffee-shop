@@ -2,7 +2,6 @@ import { cn } from "~/lib/utils"
 import { OrderCard } from "~/components/admin/order-card"
 import { useDrinks } from "~/hooks/use-drinks"
 import { useMilks } from "~/hooks/use-milks"
-import { STATUS } from "~/hooks/use-orders"
 import type { ApiOrder } from "~/hooks/use-orders"
 
 const COLS: [string, string][] = [

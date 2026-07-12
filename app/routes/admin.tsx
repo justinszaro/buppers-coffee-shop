@@ -1,12 +1,10 @@
 import { NavBar } from "~/components/nav-bar"
 import { Eyebrow } from "~/components/eyebrow"
-import { Button } from "~/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
 import { StatCard } from "~/components/admin/stat-card"
 import { Board } from "~/components/admin/board"
 import { RecipeBook } from "~/components/admin/recipe-book"
 import { useOrders, STATUS } from "~/hooks/use-orders"
-import { useDrinks } from "~/hooks/use-drinks"
 import type { ApiOrder } from "~/hooks/use-orders"
 
 export function meta() {
@@ -21,7 +19,6 @@ export function meta() {
 
 export default function Admin() {
   const { data: apiOrders, isFetching, mutator } = useOrders({ $sort: { createdAt: -1 }, $limit: 200 })
-  const { data: drinks } = useDrinks({ active: true, $limit: 100 })
   const orders = apiOrders ?? []
 
   const startOfDay = new Date()
