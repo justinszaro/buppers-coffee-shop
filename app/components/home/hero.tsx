@@ -66,7 +66,7 @@ export function Hero() {
       {/* Right: photo */}
       <div className="relative">
         <img
-          src="/img-bar.jpg"
+          src="/assets/bar.jpg"
           alt="The bar, down in the basement"
           className="block h-[420px] w-full rounded-[20px] object-cover shadow-[var(--shadow-brand)]"
         />

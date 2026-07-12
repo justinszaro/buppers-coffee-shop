@@ -7,17 +7,39 @@ const VALUES: [string, string][] = [
   ["Run by regulars", "Buppers works the bar, Maple runs the till. You already know them."],
 ]
 
+function StoryGraphic() {
+  return (
+    <svg
+      viewBox="0 0 480 400"
+      width="100%"
+      height="400"
+      style={{ display: "block", borderRadius: 20, boxShadow: "0 1px 2px rgba(20,30,28,.05), 0 4px 14px rgba(20,30,28,.05)" }}
+    >
+      <rect width="480" height="400" rx="20" fill="#06463f" />
+      <rect x="18" y="18" width="444" height="364" rx="10" fill="none" stroke="#7fb3aa" strokeWidth="1.5" strokeDasharray="2 6" />
+      <g stroke="#f8f7f2" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <path d="M195 90 h90 v55 a45 45 0 0 1 -90 0 Z" />
+        <path d="M285 105 h20 a18 18 0 0 1 0 36 h-20" />
+        <path d="M213 68 q6 -14 0 -24 M240 68 q6 -14 0 -24 M267 68 q6 -14 0 -24" />
+      </g>
+      <text x="240" y="280" textAnchor="middle" fontFamily="'Instrument Sans', system-ui, sans-serif" fontWeight="700" fontSize="26" fill="#f8f7f2">Basement Bar</text>
+      <text x="240" y="312" textAnchor="middle" fontFamily="'Inter', system-ui, sans-serif" fontWeight="500" fontSize="14" fill="#9fc9c2">14 steps down · open daily</text>
+      <foreignObject x="180" y="328" width="120" height="54">
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <DuoMark size={54} variant="cream" />
+        </div>
+      </foreignObject>
+    </svg>
+  )
+}
+
 export function AboutSection() {
   return (
     <section className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-[84px]">
       <div className="grid grid-cols-2 gap-14 items-center">
-        {/* Photo */}
+        {/* Story infographic */}
         <div className="relative">
-          <img
-            src="/img-stairs.jpg"
-            alt="Down the basement stairs"
-            className="w-full object-cover rounded-[20px] block h-[400px] shadow-[var(--shadow-brand-sm)]"
-          />
+          <StoryGraphic />
           <div
             className="absolute bg-teal-wash rounded-[18px] p-[18px] -right-[22px] -top-[22px] shadow-[var(--shadow-brand-sm)]"
           >

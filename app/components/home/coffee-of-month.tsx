@@ -1,6 +1,7 @@
 import { Link } from "react-router"
 import { Button } from "~/components/ui/button"
 import { Badge } from "~/components/ui/badge"
+import { DuoMark } from "~/components/duo-mark"
 import { useDrinks } from "~/hooks/use-drinks"
 import { useBeans } from "~/hooks/use-beans"
 
@@ -15,11 +16,17 @@ export function CoffeeOfMonth() {
   return (
     <section className="bg-teal-dark text-cream">
       <div className="max-w-[1160px] mx-auto px-7 grid items-center gap-[52px] pt-[64px] pb-[64px] grid-cols-[0.9fr_1.1fr]">
-        <img
-          src="/img-bar.jpg"
-          alt={drink.name}
-          className="w-full object-cover rounded-[20px] block h-[380px]"
-        />
+        {drink.photo ? (
+          <img
+            src={drink.photo}
+            alt={drink.name}
+            className="w-full object-cover rounded-[20px] block h-[380px]"
+          />
+        ) : (
+          <div className="w-full h-[380px] rounded-[20px] bg-teal flex items-center justify-center">
+            <DuoMark size={120} variant="cream" />
+          </div>
+        )}
         <div>
           <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7e3e1] text-red-deep border-transparent">Drink of the Month</Badge>
           <h2 className="font-heading font-bold text-[44px] tracking-[-0.02em] leading-[1.08] mt-[18px] mb-0">

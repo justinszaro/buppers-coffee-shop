@@ -6,6 +6,7 @@ export interface Drink {
   name: string
   description: string
   tone: string
+  photo?: string
   recipe: string[]
   active: boolean
   featured: boolean

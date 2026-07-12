@@ -1,6 +1,30 @@
+import { useState } from "react"
 import { Eyebrow } from "~/components/eyebrow"
 import { Badge } from "~/components/ui/badge"
 import { useBeans } from "~/hooks/use-beans"
+
+function BeanPhoto({ beanId, name }: { beanId: number; name: string }) {
+  const [failed, setFailed] = useState(false)
+
+  if (!failed) {
+    return (
+      <img
+        src={`/assets/botm.jpeg`}
+        alt={name}
+        className="w-full h-full object-cover min-h-[360px]"
+        onError={() => setFailed(true)}
+      />
+    )
+  }
+
+  return (
+    <div className="bg-bean-bag flex items-center justify-center min-h-[360px]">
+      <span className="font-mono text-[12px] tracking-[0.04em] bg-white/70 px-[11px] py-[5px] rounded-[6px] text-[#9c8a6f]">
+        bag · {name.toLowerCase()}
+      </span>
+    </div>
+  )
+}
 
 export function BeansSection() {
   const { data: beans, isLoading: loading } = useBeans({ active: true, $limit: 1 })
@@ -30,12 +54,7 @@ export function BeansSection() {
         <div className="bg-white rounded-[22px] border border-line min-h-[360px] animate-pulse" />
       ) : currentBean ? (
         <div className="bg-white rounded-[22px] border border-line overflow-hidden grid grid-cols-[0.85fr_1.15fr] shadow-[var(--shadow-brand)]">
-          {/* Bean bag placeholder */}
-          <div className="bg-bean-bag flex items-center justify-center min-h-[360px]">
-            <span className="font-mono text-[12px] tracking-[0.04em] bg-white/70 px-[11px] py-[5px] rounded-[6px] text-[#9c8a6f]">
-              bag · {currentBean.name.toLowerCase()}
-            </span>
-          </div>
+          <BeanPhoto beanId={currentBean.beanId} name={currentBean.name} />
 
           {/* Bean details */}
           <div className="p-[40px_44px]">
