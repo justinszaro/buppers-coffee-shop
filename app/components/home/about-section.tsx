@@ -4,7 +4,7 @@ import { Eyebrow } from "~/components/eyebrow"
 const VALUES: [string, string][] = [
   ["Beans we trust", "We buy small lots from roasters we actually visit — one lands on the bar each week."],
   ["Made slow", "No rushed shots. We dial in every morning and weigh every pour."],
-  ["Run by regulars", "Buppers works the bar, Maple runs the till. You already know them."],
+  ["Run by regulars", "Jack pulls the shots, Jill steams the milk. You already know them."],
 ]
 
 function StoryGraphic() {
