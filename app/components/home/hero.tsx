@@ -20,10 +20,10 @@ export function Hero() {
   ]
 
   return (
-    <section className="mx-auto grid max-w-[1160px] grid-cols-[1.05fr_0.95fr] items-center gap-14 px-7 pt-[64px] pb-[72px]">
+    <section className="mx-auto grid max-w-[1160px] grid-cols-[1.05fr_0.95fr] items-center gap-14 px-7 pt-[64px] pb-[72px] max-[900px]:grid-cols-1 max-[900px]:pt-10 max-[900px]:pb-11 max-[900px]:gap-9 max-[520px]:px-[18px]">
       <div>
         <Eyebrow>Basement coffee bar · Est. 2026</Eyebrow>
-        <h1 className="mt-[22px] mb-0 font-heading text-[58px] leading-[1.04] font-bold tracking-[-0.03em] text-ink">
+        <h1 className="mt-[22px] mb-0 font-heading text-[58px] leading-[1.04] font-bold tracking-[-0.03em] text-ink max-[900px]:text-[40px] max-[520px]:text-[32px]">
           Two woolly regulars,
           <br />
           one very good cup.
@@ -49,7 +49,7 @@ export function Hero() {
           </a>
         </div>
 
-        <div className="mt-10 flex gap-7">
+        <div className="mt-10 flex flex-wrap gap-7 max-[520px]:gap-5">
           {stats.map(([a, b]) => (
             <div key={b}>
               <div className="font-heading text-[26px] font-bold text-teal">

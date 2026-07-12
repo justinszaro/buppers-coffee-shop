@@ -36,8 +36,8 @@ export function BeansSection() {
     .filter(Boolean) ?? []
 
   return (
-    <section id="beans" className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-6">
-      <div className="flex justify-between items-end mb-9 flex-wrap gap-4">
+    <section id="beans" className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-6 max-[520px]:px-[18px]">
+      <div className="flex justify-between items-end mb-9 flex-wrap gap-4 max-[640px]:flex-col max-[640px]:items-start">
         <div>
           <Eyebrow>On the bar right now</Eyebrow>
           <h2 className="font-heading font-bold text-[38px] tracking-[-0.02em] text-ink mt-3 mb-0">
@@ -53,11 +53,11 @@ export function BeansSection() {
       {loading ? (
         <div className="bg-white rounded-[22px] border border-line min-h-[360px] animate-pulse" />
       ) : currentBean ? (
-        <div className="bg-white rounded-[22px] border border-line overflow-hidden grid grid-cols-[0.85fr_1.15fr] shadow-[var(--shadow-brand)]">
+        <div className="bg-white rounded-[22px] border border-line overflow-hidden grid grid-cols-[0.85fr_1.15fr] shadow-[var(--shadow-brand)] max-[860px]:grid-cols-1">
           <BeanPhoto beanId={currentBean.beanId} name={currentBean.name} />
 
           {/* Bean details */}
-          <div className="p-[40px_44px]">
+          <div className="p-[40px_44px] max-[520px]:p-[28px_24px]">
             <div className="flex items-center gap-3 mb-[10px]">
               <h3 className="font-heading font-bold text-[32px] text-ink m-0 tracking-[-0.02em]">
                 {currentBean.name}

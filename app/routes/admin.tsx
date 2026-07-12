@@ -39,7 +39,7 @@ export default function Admin() {
       <NavBar active="admin" />
 
       {/* Page header */}
-      <div className="max-w-[1240px] mx-auto px-7 pt-10 pb-6">
+      <div className="max-w-[1240px] mx-auto px-7 pt-10 pb-6 max-[520px]:px-[18px]">
         <div className="flex justify-between items-end flex-wrap gap-4">
           <div>
             <Eyebrow>Staff portal</Eyebrow>
@@ -57,7 +57,7 @@ export default function Admin() {
         </div>
 
         {/* Stats row */}
-        <div className="flex gap-4 mt-[26px]">
+        <div className="grid grid-cols-4 gap-4 mt-[26px] max-[700px]:grid-cols-2">
           <StatCard label="Orders today" value={today.length} />
           <StatCard label="In progress" value={active} color="#c98a3c" />
           <StatCard label="Ready now" value={ready} color="#3f8d6e" />
@@ -66,7 +66,7 @@ export default function Admin() {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="orders" className="max-w-[1240px] mx-auto px-7 gap-0">
+      <Tabs defaultValue="orders" className="max-w-[1240px] mx-auto px-7 gap-0 max-[520px]:px-[18px]">
         <div className="border-b border-line pt-2">
           <TabsList
             variant="line"

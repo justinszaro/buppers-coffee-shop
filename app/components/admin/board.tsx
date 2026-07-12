@@ -35,7 +35,7 @@ export function Board({
     milkId ? (milks?.find((m) => m.milkId === milkId)?.name ?? null) : null
 
   return (
-    <div className="grid grid-cols-4 gap-[18px] items-start">
+    <div className="grid grid-cols-4 gap-[18px] items-start max-[1100px]:grid-cols-2 max-[560px]:grid-cols-1">
       {COLS.map(([key, label]) => {
         const list = orders
           .filter((o) => o.status === key)

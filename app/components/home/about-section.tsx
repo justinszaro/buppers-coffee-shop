@@ -35,8 +35,8 @@ function StoryGraphic() {
 
 export function AboutSection() {
   return (
-    <section className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-[84px]">
-      <div className="grid grid-cols-2 gap-14 items-center">
+    <section className="max-w-[1160px] mx-auto px-7 pt-[76px] pb-[84px] max-[520px]:px-[18px]">
+      <div className="grid grid-cols-2 gap-14 items-center max-[900px]:grid-cols-1 max-[900px]:gap-8">
         {/* Story infographic */}
         <div className="relative">
           <StoryGraphic />

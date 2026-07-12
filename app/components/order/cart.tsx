@@ -55,7 +55,7 @@ export function Cart({
 
   return (
     <Card
-      className="sticky top-[94px] rounded-[20px] border border-line ring-0 overflow-hidden [--card-spacing:0px] shadow-[var(--shadow-brand)]"
+      className="sticky top-[94px] rounded-[20px] border border-line ring-0 overflow-hidden [--card-spacing:0px] shadow-[var(--shadow-brand)] max-[980px]:static max-[980px]:top-auto"
     >
       {/* Header */}
       <div className="px-[22px] py-5 border-b border-line flex items-center gap-[10px]">

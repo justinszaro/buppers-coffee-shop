@@ -58,7 +58,7 @@ export default function Order() {
       <NavBar active="order" />
 
       {/* Page header */}
-      <div className="max-w-[1160px] mx-auto px-7 pt-11 pb-7">
+      <div className="max-w-[1160px] mx-auto px-7 pt-11 pb-7 max-[520px]:px-[18px]">
         <Eyebrow>Order ahead</Eyebrow>
         <h1 className="font-heading font-bold text-[40px] tracking-[-0.025em] text-ink mt-3 mb-1">
           Build your cup
@@ -70,9 +70,9 @@ export default function Order() {
       </div>
 
       {/* Drink grid + cart */}
-      <div className="max-w-[1160px] mx-auto px-7 pb-20 grid grid-cols-[1fr_372px] gap-8 items-start">
+      <div className="max-w-[1160px] mx-auto px-7 pb-20 grid grid-cols-[1fr_372px] gap-8 items-start max-[980px]:grid-cols-1 max-[520px]:px-[18px]">
         {/* Drinks grid */}
-        <div className="grid grid-cols-2 gap-[18px]">
+        <div className="grid grid-cols-2 gap-[18px] max-[640px]:grid-cols-1">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => (
                 <div

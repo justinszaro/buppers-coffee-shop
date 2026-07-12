@@ -15,7 +15,7 @@ export function CoffeeOfMonth() {
 
   return (
     <section className="bg-teal-dark text-cream">
-      <div className="max-w-[1160px] mx-auto px-7 grid items-center gap-[52px] pt-[64px] pb-[64px] grid-cols-[0.9fr_1.1fr]">
+      <div className="max-w-[1160px] mx-auto px-7 grid items-center gap-[52px] pt-[64px] pb-[64px] grid-cols-[0.9fr_1.1fr] max-[900px]:grid-cols-1 max-[900px]:gap-8 max-[520px]:px-[18px]">
         {drink.photo ? (
           <img
             src={drink.photo}
@@ -29,7 +29,7 @@ export function CoffeeOfMonth() {
         )}
         <div>
           <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7e3e1] text-red-deep border-transparent">Drink of the Month</Badge>
-          <h2 className="font-heading font-bold text-[44px] tracking-[-0.02em] leading-[1.08] mt-[18px] mb-0">
+          <h2 className="font-heading font-bold text-[44px] tracking-[-0.02em] leading-[1.08] mt-[18px] mb-0 max-[900px]:text-[32px]">
             {drink.name}
           </h2>
           <p className="font-sans text-[17px] leading-[1.65] mt-[18px] mb-6 max-w-[480px] text-[#cbe3dd]">

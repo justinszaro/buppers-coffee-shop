@@ -9,7 +9,7 @@ export function RecipeBook() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-[22px]">
+      <div className="grid grid-cols-2 gap-[22px] max-[760px]:grid-cols-1">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="bg-white border border-line rounded-[18px] h-[220px] animate-pulse" />
         ))}

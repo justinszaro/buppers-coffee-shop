@@ -4,7 +4,7 @@ import { DuoMark } from "~/components/duo-mark"
 export function Footer() {
   return (
     <footer className="bg-teal-dark text-cream mt-0">
-      <div className="max-w-[1160px] mx-auto flex flex-wrap justify-between gap-8 px-7 pt-[52px] pb-[40px]">
+      <div className="max-w-[1160px] mx-auto flex flex-wrap justify-between gap-8 px-7 pt-[52px] pb-[40px] max-[520px]:px-[18px]">
         <div className="max-w-[320px]">
           <div className="flex items-center gap-[11px]">
             <DuoMark size={38} variant="cream" />
