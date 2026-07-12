@@ -124,26 +124,9 @@ export function Customizer({
 
         {/* Options */}
         <div className="flex-1 overflow-y-auto px-7 py-[22px]">
-          <FieldLabel label="Temperature">
-            {drink.temp ? (
-              <div className="flex items-center gap-2">
-                <Chip active={false} onClick={() => {}}>
-                  {drink.temp === "hot" ? (
-                    <>
-                      <Coffee className="inline" size={11} /> Hot
-                    </>
-                  ) : (
-                    <>
-                      <Snowflake className="inline" size={11} /> Iced
-                    </>
-                  )}
-                </Chip>
-                <span className="font-sans text-[12px] text-buppers-muted">
-                  Fixed for this drink
-                </span>
-              </div>
-            ) : (
-              <div className="flex gap-[10px]">
+          {drink.temp === null ? (
+            <FieldLabel label="Temperature">
+              <div className="flex flex-wrap gap-[10px]">
                 <Chip active={isHot} onClick={() => setIsHot(true)}>
                   <Coffee className="inline" size={11} /> Hot
                 </Chip>
@@ -151,8 +134,8 @@ export function Customizer({
                   <Snowflake className="inline" size={11} /> Iced
                 </Chip>
               </div>
-            )}
-          </FieldLabel>
+            </FieldLabel>
+          ) : null}
 
           {milkOptions.length > 0 && (
             <FieldLabel label="Milk">
