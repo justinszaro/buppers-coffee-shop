@@ -39,6 +39,7 @@ export function Cart({
             drinkId: Number(item.drinkId),
             milkId: item.milkId,
             addonIds: item.addonIds,
+            isHot: item.isHot,
             name: customerName,
           }),
         ),

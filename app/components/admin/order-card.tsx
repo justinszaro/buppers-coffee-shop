@@ -1,3 +1,4 @@
+import { Coffee, Snowflake } from 'lucide-react';
 import { cn } from "~/lib/utils"
 import { Card, CardContent } from "~/components/ui/card"
 import { Button } from "~/components/ui/button"
@@ -45,8 +46,17 @@ export function OrderCard({
         <div className="flex flex-col gap-[6px] mb-3">
           <div className="flex gap-2">
             <div className="min-w-0">
-              <div className="font-heading font-semibold text-[13.5px] text-ink">
-                {drinkLabel}
+              <div className="flex items-center gap-[6px]">
+                <span className="font-heading font-semibold text-[13.5px] text-ink">
+                  {drinkLabel}
+                </span>
+                <span className="font-sans text-[11.5px] text-buppers-muted flex items-center gap-[3px]">
+                  {o.isHot ? (
+                    <><Coffee className="inline" size={11} /> Hot</>
+                  ) : (
+                    <><Snowflake className="inline" size={11} /> Iced</>
+                  )}
+                </span>
               </div>
               {milkLabel && (
                 <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">

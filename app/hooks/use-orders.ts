@@ -19,6 +19,7 @@ export interface ApiOrder {
   addons: OrderAddon[]
   name: string
   status: OrderStatus
+  isHot: boolean
   createdAt: string
   updatedAt: string
 }
@@ -28,6 +29,7 @@ export interface CartItem {
   drinkId: string
   milkId: number | null
   addonIds: number[]
+  isHot: boolean
   name: string
   detail: string
   qty: number
