@@ -11,7 +11,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import type { Route } from "./+types/root"
 import "./app.css"
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+})
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

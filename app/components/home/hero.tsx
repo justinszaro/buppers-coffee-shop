@@ -7,13 +7,12 @@ import { useDrinks } from "~/hooks/use-drinks"
 import { useOrders } from "~/hooks/use-orders"
 
 export function Hero() {
-  const { data: drinks } = useDrinks({ active: true, $limit: 100 })
-  const activeDrinks = drinks?.length ?? 0
+  const { total: totalDrinks } = useDrinks({ active: true, $limit: 0 })
   const { total: drinksServed } = useOrders({ status: "complete", $limit: 0 })
 
   const stats: [string, string][] = [
     ["7am–1pm", "Open daily"],
-    [activeDrinks > 0 ? String(activeDrinks) : "—", "Drinks on the menu"],
+    [totalDrinks > 0 ? String(totalDrinks) : "—", "Drinks on the menu"],
     [
       drinksServed != null ? drinksServed.toLocaleString() : "—",
       "Drinks served",
