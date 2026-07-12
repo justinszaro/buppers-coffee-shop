@@ -1,13 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import client from "~/lib/feathers-client"
 
-export type OrderStatus =
+type OrderStatus =
   | "ordered"
   | "brewing"
   | "ready-for-pickup"
   | "complete"
 
-export interface OrderAddon {
+interface OrderAddon {
   addonId: number
   name: string
 }

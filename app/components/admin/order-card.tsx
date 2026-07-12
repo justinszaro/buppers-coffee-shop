@@ -1,7 +1,7 @@
 import { cn } from "~/lib/utils"
 import { Card, CardContent } from "~/components/ui/card"
 import { Button } from "~/components/ui/button"
-import { Badge } from "~/components/badge"
+import { Badge } from "~/components/ui/badge"
 import { STATUS, ACTION, timeAgo } from "~/hooks/use-orders"
 import type { ApiOrder } from "~/hooks/use-orders"
 
@@ -75,7 +75,7 @@ export function OrderCard({
               {ACTION[o.status]}
             </Button>
           ) : (
-            <Badge tone="grey">Done</Badge>
+            <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#eeece7] text-ink-soft border-transparent">Done</Badge>
           )}
         </div>
       </CardContent>

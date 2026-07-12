@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { Button } from "~/components/ui/button"
-import { Badge } from "~/components/badge"
+import { Badge } from "~/components/ui/badge"
 import { useDrinks } from "~/hooks/use-drinks"
 import { useBeans } from "~/hooks/use-beans"
 
@@ -21,7 +21,7 @@ export function CoffeeOfMonth() {
           className="w-full object-cover rounded-[20px] block h-[380px]"
         />
         <div>
-          <Badge tone="red">Drink of the Month</Badge>
+          <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7e3e1] text-red-deep border-transparent">Drink of the Month</Badge>
           <h2 className="font-heading font-bold text-[44px] tracking-[-0.02em] leading-[1.08] mt-[18px] mb-0">
             {drink.name}
           </h2>

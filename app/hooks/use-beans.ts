@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import client from "~/lib/feathers-client"
 
-export interface Bean {
+interface Bean {
   beanId: number
   name: string
   description: string | null

@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog"
-import { Badge } from "~/components/badge"
+import { Badge } from "~/components/ui/badge"
 import { Stepper } from "~/components/stepper"
 import type { CartItem } from "~/hooks/use-orders"
 import type { Drink } from "~/hooks/use-drinks"
@@ -93,7 +93,7 @@ export function Customizer({
           <div>
             {drink.featured && (
               <div className="mb-2">
-                <Badge tone="red">Seasonal</Badge>
+                <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7e3e1] text-red-deep border-transparent">Seasonal</Badge>
               </div>
             )}
             <DialogTitle className="font-heading font-bold text-[26px] text-ink tracking-[-0.02em] leading-tight">

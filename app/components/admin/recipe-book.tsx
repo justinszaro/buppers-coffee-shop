@@ -1,5 +1,5 @@
 import { Card, CardContent } from "~/components/ui/card"
-import { Badge } from "~/components/badge"
+import { Badge } from "~/components/ui/badge"
 import { useDrinks } from "~/hooks/use-drinks"
 
 export function RecipeBook() {
@@ -37,7 +37,7 @@ export function RecipeBook() {
               <h3 className="font-heading font-bold text-[22px] text-ink m-0 tracking-[-0.01em]">
                 {drink.name}
               </h3>
-              {drink.featured && <Badge tone="red">Seasonal</Badge>}
+              {drink.featured && <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7e3e1] text-red-deep border-transparent">Seasonal</Badge>}
             </div>
 
             <div className="font-sans text-[13.5px] text-buppers-muted mb-[18px]">

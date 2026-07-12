@@ -1,5 +1,5 @@
 import { Eyebrow } from "~/components/eyebrow"
-import { Badge } from "~/components/badge"
+import { Badge } from "~/components/ui/badge"
 import { useBeans } from "~/hooks/use-beans"
 
 export function BeansSection() {
@@ -43,7 +43,7 @@ export function BeansSection() {
               <h3 className="font-heading font-bold text-[32px] text-ink m-0 tracking-[-0.02em]">
                 {currentBean.name}
               </h3>
-              <Badge tone="amber">{currentBean.roast} roast</Badge>
+              <Badge className="h-auto font-semibold text-[11.5px] tracking-[0.06em] uppercase rounded-full px-[10px] py-[4px] whitespace-nowrap bg-[#f7eddc] text-[#8a5a1e] border-transparent">{currentBean.roast} roast</Badge>
             </div>
 
             <div className="font-sans text-[15px] text-buppers-muted mb-[18px]">
