@@ -7,20 +7,62 @@ export type OrderStatus =
   | "ready-for-pickup"
   | "complete"
 
+export interface OrderAddon {
+  addonId: number
+  name: string
+}
+
 export interface ApiOrder {
   orderId: number
   drinkId: number
   milkId: number | null
+  addons: OrderAddon[]
   name: string
   status: OrderStatus
   createdAt: string
   updatedAt: string
 }
 
+export interface CartItem {
+  uid: string
+  drinkId: string
+  milkId: number | null
+  addonIds: number[]
+  name: string
+  detail: string
+  qty: number
+}
+
+export interface PlacedOrder {
+  id: number
+  name: string
+  items: { name: string; detail: string; qty: number }[]
+}
+
+export const STATUS: Record<string, { label: string; tone: string; next: string | null }> = {
+  ordered: { label: "New", tone: "red", next: "brewing" },
+  brewing: { label: "Brewing", tone: "amber", next: "ready-for-pickup" },
+  "ready-for-pickup": { label: "Ready", tone: "green", next: "complete" },
+  complete: { label: "Picked up", tone: "grey", next: null },
+}
+
+export const ACTION: Record<string, string> = {
+  ordered: "Start brewing →",
+  brewing: "Mark ready →",
+  "ready-for-pickup": "Hand off →",
+}
+
+export function timeAgo(t: string) {
+  const m = Math.round((Date.now() - new Date(t).getTime()) / 60000)
+  if (m < 1) return "just now"
+  if (m < 60) return m + " min ago"
+  return Math.round(m / 60) + " hr ago"
+}
+
 export function useOrders(query: Record<string, unknown> = {}) {
   const queryClient = useQueryClient()
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["orders", query],
     queryFn: async () => {
       const response = await client.service("buppers/orders").find({ query })
@@ -33,9 +75,9 @@ export function useOrders(query: Record<string, unknown> = {}) {
     mutationFn: (order: { orderId?: number; [key: string]: unknown }) => {
       if (order.orderId) {
         const { orderId, ...fields } = order
-        return client.service("buppers/orders").patch(orderId, fields)
+        return client.service("buppers/orders").patch(orderId, fields) as Promise<ApiOrder>
       }
-      return client.service("buppers/orders").create(order)
+      return client.service("buppers/orders").create(order) as Promise<ApiOrder>
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -58,6 +100,7 @@ export function useOrders(query: Record<string, unknown> = {}) {
     data: data?.data,
     total: data?.total,
     isLoading,
+    isFetching,
     error,
     mutator,
     remover,

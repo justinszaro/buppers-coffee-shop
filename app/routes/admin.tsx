@@ -5,23 +5,37 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
 import { StatCard } from "~/components/admin/stat-card"
 import { Board } from "~/components/admin/board"
 import { RecipeBook } from "~/components/admin/recipe-book"
-import { useOrders, simulateOrder } from "~/lib/order-store"
-import { useState } from "react"
+import { useOrders, STATUS } from "~/hooks/use-orders"
+import { useDrinks } from "~/hooks/use-drinks"
+import type { ApiOrder } from "~/hooks/use-orders"
+
+const SEED_NAMES = ["Wren", "Tobias", "Marisol", "Dev", "Priya", "Sam", "Elena", "Hugo"]
 
 export default function Admin() {
-  const orders = useOrders()
-  const [, forceRender] = useState(0)
+  const { data: apiOrders, isFetching, mutator } = useOrders({ $sort: { createdAt: -1 }, $limit: 200 })
+  const { data: drinks } = useDrinks({ active: true, $limit: 100 })
+  const orders = apiOrders ?? []
 
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
-  const today = orders.filter((o) => o.placedAt >= startOfDay.getTime())
-  const active = orders.filter((o) => o.status === "new" || o.status === "brewing").length
-  const ready = orders.filter((o) => o.status === "ready").length
-  const completed = today.filter((o) => o.status === "done").length
+  const todayStr = startOfDay.toISOString()
+  const today = orders.filter((o) => o.createdAt >= todayStr)
+  const active = orders.filter((o) => o.status === "ordered" || o.status === "brewing").length
+  const ready = orders.filter((o) => o.status === "ready-for-pickup").length
+  const completed = today.filter((o) => o.status === "complete").length
+
+  const doAdvance = (order: ApiOrder) => {
+    const next = STATUS[order.status]?.next
+    if (next) mutator.mutate({ orderId: order.orderId, status: next })
+  }
 
   const handleSimulate = () => {
-    simulateOrder()
-    forceRender((n) => n + 1)
+    const drink = drinks?.[Math.floor(Math.random() * (drinks?.length ?? 1))]
+    if (!drink) return
+    mutator.mutate({
+      drinkId: drink.drinkId,
+      name: SEED_NAMES[Math.floor(Math.random() * SEED_NAMES.length)],
+    })
   }
 
   return (
@@ -39,17 +53,9 @@ export default function Admin() {
           </div>
 
           <div className="flex gap-[10px] items-center">
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full font-semibold text-[13.5px] text-ink-soft border-line"
-              onClick={handleSimulate}
-            >
-              + Simulate order
-            </Button>
-            <div className="flex items-center gap-[7px] font-sans text-[13px] rounded-full px-[14px] py-2 bg-[#dff0e8] text-buppers-green">
-              <span className="w-[7px] h-[7px] rounded-full bg-buppers-green animate-bpulse" />
-              Live
+            <div className={`flex items-center gap-[7px] font-sans text-[13px] rounded-full px-[14px] py-2 transition-colors duration-300 ${isFetching ? "bg-buppers-green text-white" : "bg-[#dff0e8] text-buppers-green"}`}>
+              <span className={`w-[7px] h-[7px] rounded-full ${isFetching ? "bg-white animate-bpulse" : "bg-buppers-green"}`} />
+              {isFetching ? "Syncing…" : "Live"}
             </div>
           </div>
         </div>
@@ -85,7 +91,7 @@ export default function Admin() {
           </TabsList>
         </div>
         <TabsContent value="orders" className="pt-7 pb-20 mt-0">
-          <Board orders={orders} />
+          <Board orders={orders} onAdvance={doAdvance} />
         </TabsContent>
         <TabsContent value="recipes" className="pt-7 pb-20 mt-0">
           <RecipeBook />

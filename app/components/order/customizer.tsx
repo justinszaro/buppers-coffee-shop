@@ -14,7 +14,7 @@ import { Badge } from "~/components/badge"
 import { Stepper } from "~/components/stepper"
 import { SIZES } from "~/lib/menu-data"
 import type { DrinkDef } from "~/lib/menu-data"
-import type { CartItem } from "~/lib/order-store"
+import type { CartItem } from "~/hooks/use-orders"
 
 type Option = { id: string; label: string }
 
@@ -31,7 +31,7 @@ function Chip({
     <button
       onClick={onClick}
       className={cn(
-        "font-sans text-left cursor-pointer rounded-[12px] px-[15px] py-3 border-[1.5px] transition-all duration-[120ms] text-[14.5px] font-semibold",
+        "font-sans text-left cursor-pointer rounded-[12px] px-[15px] py-3 border-[1.5px] transition-all duration-[120ms] text-[14.5px] font-semibold whitespace-nowrap",
         active
           ? "border-teal bg-teal-wash text-teal-deep"
           : "border-line bg-white text-ink-soft",
@@ -77,7 +77,6 @@ export function Customizer({
     setExtras((e) => (e.includes(id) ? e.filter((x) => x !== id) : [...e, id]))
 
   const detail = [
-    SIZES.find((s) => s.id === size)?.label.split(" · ")[0],
     drink.milk ? milkOptions.find((m) => m.id === milk)?.label : null,
     ...extras.map((e) => "+" + extraOptions.find((x) => x.id === e)?.label),
   ]
@@ -114,19 +113,9 @@ export function Customizer({
 
         {/* Options */}
         <div className="px-7 py-[22px] overflow-y-auto flex-1">
-          <FieldLabel label="Size">
-            <div className="grid grid-cols-3 gap-[10px]">
-              {SIZES.map((s) => (
-                <Chip key={s.id} active={size === s.id} onClick={() => setSize(s.id)}>
-                  {s.label}
-                </Chip>
-              ))}
-            </div>
-          </FieldLabel>
-
           {drink.milk && (
             <FieldLabel label="Milk">
-              <div className="grid grid-cols-4 gap-[10px]">
+              <div className="flex flex-wrap gap-[10px]">
                 {milkOptions.map((m) => (
                   <Chip key={m.id} active={milk === m.id} onClick={() => setMilk(m.id)}>
                     {m.label}
@@ -165,6 +154,8 @@ export function Customizer({
               onAdd({
                 uid: Math.random().toString(36).slice(2),
                 drinkId: drink.id,
+                milkId: drink.milk ? Number(milk) : null,
+                addonIds: extras.map(Number),
                 name: drink.name,
                 detail,
                 qty,

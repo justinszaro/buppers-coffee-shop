@@ -11,7 +11,7 @@ import { useBeans } from "~/hooks/use-beans"
 import { useMilks } from "~/hooks/use-milks"
 import { useAddons } from "~/hooks/use-addons"
 import type { DrinkDef } from "~/lib/menu-data"
-import type { CartItem, PlacedOrder } from "~/lib/order-store"
+import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export default function Order() {
   const [items, setItems] = useState<CartItem[]>([])

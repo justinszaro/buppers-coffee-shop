@@ -5,6 +5,8 @@ export interface Drink {
   drinkId: number
   name: string
   description: string
+  tone: string
+  recipe: string[]
   active: boolean
   featured: boolean
   position: number

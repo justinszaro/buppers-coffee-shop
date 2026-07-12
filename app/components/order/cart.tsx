@@ -5,8 +5,8 @@ import { Input } from "~/components/ui/input"
 import { Separator } from "~/components/ui/separator"
 import { DuoMark } from "~/components/duo-mark"
 import { Stepper } from "~/components/stepper"
-import { addOrder } from "~/lib/order-store"
-import type { CartItem, PlacedOrder } from "~/lib/order-store"
+import { useOrders } from "~/hooks/use-orders"
+import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export function Cart({
   items,
@@ -18,6 +18,8 @@ export function Cart({
   onPlaced: (o: PlacedOrder) => void
 }) {
   const [name, setName] = useState("")
+  const [placing, setPlacing] = useState(false)
+  const { mutator } = useOrders()
   const count = items.reduce((s, i) => s + i.qty, 0)
 
   const setQty = (uid: string, q: number) =>
@@ -27,13 +29,29 @@ export function Cart({
         : arr.map((i) => (i.uid === uid ? { ...i, qty: q } : i)),
     )
 
-  const place = () =>
-    onPlaced(
-      addOrder({
-        name: name.trim() || "Walk-in",
+  const place = async () => {
+    setPlacing(true)
+    const customerName = name.trim()
+    try {
+      const results = await Promise.all(
+        items.map((item) =>
+          mutator.mutateAsync({
+            drinkId: Number(item.drinkId),
+            milkId: item.milkId,
+            addonIds: item.addonIds,
+            name: customerName,
+          }),
+        ),
+      )
+      onPlaced({
+        id: results[0].orderId,
+        name: customerName,
         items: items.map((i) => ({ name: i.name, detail: i.detail, qty: i.qty })),
-      }),
-    )
+      })
+    } finally {
+      setPlacing(false)
+    }
+  }
 
   return (
     <Card
@@ -95,12 +113,10 @@ export function Cart({
           <Button
             className="w-full bg-teal text-white rounded-full font-semibold text-base px-[26px] py-[14px] h-auto border-none hover:bg-teal-deep"
             onClick={place}
+            disabled={placing || !name.trim()}
           >
-            Send to the bar →
+            {placing ? "Sending…" : "Send to the bar →"}
           </Button>
-          <p className="font-sans text-[12px] text-buppers-muted text-center mt-3 mb-0">
-            Ready for pickup in about 6 minutes
-          </p>
         </div>
       )}
     </Card>

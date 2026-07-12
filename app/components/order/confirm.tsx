@@ -4,7 +4,7 @@ import { Card, CardContent } from "~/components/ui/card"
 import { Separator } from "~/components/ui/separator"
 import { DuoMark } from "~/components/duo-mark"
 import { NavBar } from "~/components/nav-bar"
-import type { PlacedOrder } from "~/lib/order-store"
+import type { PlacedOrder } from "~/hooks/use-orders"
 
 export function Confirm({
   order,
@@ -28,9 +28,6 @@ export function Confirm({
             <h2 className="font-heading font-bold text-[30px] m-0 tracking-[-0.02em]">
               Order in, {order.name}!
             </h2>
-            <p className="font-sans text-[15px] mt-2 mb-0 text-[#bcd9d3]">
-              Buppers is on it. Ready in about 6 minutes.
-            </p>
           </div>
 
           {/* Order details */}

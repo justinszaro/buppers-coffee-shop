@@ -2,25 +2,28 @@ import { cn } from "~/lib/utils"
 import { Card, CardContent } from "~/components/ui/card"
 import { Button } from "~/components/ui/button"
 import { Badge } from "~/components/badge"
-import { STATUS, ACTION, timeAgo } from "~/lib/order-store"
-import type { Order } from "~/lib/order-store"
+import { STATUS, ACTION, timeAgo } from "~/hooks/use-orders"
+import type { ApiOrder } from "~/hooks/use-orders"
 
 const BOARD_LEFT_CLASS: Record<string, string> = {
-  new: "border-l-[3px] border-l-buppers-red",
+  ordered: "border-l-[3px] border-l-buppers-red",
   brewing: "border-l-[3px] border-l-amber",
-  ready: "border-l-[3px] border-l-buppers-green",
-  done: "border-l-[3px] border-l-line",
+  "ready-for-pickup": "border-l-[3px] border-l-buppers-green",
+  complete: "border-l-[3px] border-l-line",
 }
 
 export function OrderCard({
   o,
+  drinkLabel,
+  milkLabel,
   onAdvance,
 }: {
-  o: Order
+  o: ApiOrder
+  drinkLabel: string
+  milkLabel: string | null
   onAdvance: () => void
 }) {
   const st = STATUS[o.status]
-  const totalDrinks = o.items.reduce((s, i) => s + i.qty, 0)
 
   return (
     <Card
@@ -32,34 +35,36 @@ export function OrderCard({
       <CardContent className="p-4">
         <div className="flex justify-between items-center mb-[10px]">
           <span className="font-heading font-bold text-base text-ink">
-            #{o.id} · {o.name}
+            #{o.orderId} · {o.name}
           </span>
           <span className="font-sans text-[12px] text-buppers-muted">
-            {timeAgo(o.placedAt)}
+            {timeAgo(o.createdAt)}
           </span>
         </div>
 
         <div className="flex flex-col gap-[6px] mb-3">
-          {o.items.map((i, n) => (
-            <div key={n} className="flex gap-2">
-              <span className="font-heading font-semibold text-[13.5px] text-teal shrink-0">
-                {i.qty}×
-              </span>
-              <div className="min-w-0">
-                <div className="font-heading font-semibold text-[13.5px] text-ink">
-                  {i.name}
-                </div>
-                <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
-                  {i.detail}
-                </div>
+          <div className="flex gap-2">
+            <div className="min-w-0">
+              <div className="font-heading font-semibold text-[13.5px] text-ink">
+                {drinkLabel}
               </div>
+              {milkLabel && (
+                <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
+                  {milkLabel}
+                </div>
+              )}
+              {o.addons.length > 0 && (
+                <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
+                  +{o.addons.map((a) => a.name).join(", ")}
+                </div>
+              )}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="flex justify-between items-center">
           <span className="font-sans text-[12.5px] text-buppers-muted">
-            {totalDrinks} {totalDrinks === 1 ? "drink" : "drinks"}
+            {st?.label ?? o.status}
           </span>
           {st?.next ? (
             <Button
