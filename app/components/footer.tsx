@@ -21,7 +21,7 @@ export function Footer() {
         <div className="flex flex-wrap gap-14">
           <FooterCol
             title="Visit"
-            items={["Basement · 142 Birch Lane", "Open 7am – 6pm", "Daily"]}
+            items={["Basement", "Open 7am – 6pm", "Daily"]}
           />
           <FooterCol
             title="More"
