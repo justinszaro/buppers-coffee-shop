@@ -18,7 +18,7 @@ export default function Order() {
   const [active, setActive] = useState<DrinkDef | null>(null)
   const [placed, setPlaced] = useState<PlacedOrder | null>(null)
 
-  const { data: apiDrinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100 })
+  const { data: apiDrinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100, $sort: { position: 1 } })
   const { data: beans, isLoading: beansLoading } = useBeans({ active: true, $limit: 1 })
   const { data: apiMilks, isLoading: milksLoading } = useMilks({ $limit: 100 })
   const { data: apiAddons, isLoading: addonsLoading } = useAddons({ $limit: 100 })

@@ -7,6 +7,7 @@ export interface Drink {
   description: string
   active: boolean
   featured: boolean
+  position: number
   createdAt: string
   updatedAt: string
 }
