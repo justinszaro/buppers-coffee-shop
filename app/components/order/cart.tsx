@@ -96,14 +96,14 @@ export function Cart({
                   </div>
                 </div>
               </div>
-              {idx < items.length - 1 && <Separator className="bg-line-soft" />}
+              {idx < items.length - 1 ? <Separator className="bg-line-soft" /> : null}
             </div>
           ))
         )}
       </div>
 
       {/* Place order */}
-      {items.length > 0 && (
+      {items.length > 0 ? (
         <div className="px-[22px] pt-[18px] pb-[22px]">
           <Input
             value={name}
@@ -119,7 +119,7 @@ export function Cart({
             {placing ? "Sending…" : "Send to the bar →"}
           </Button>
         </div>
-      )}
+      ) : null}
     </Card>
   )
 }

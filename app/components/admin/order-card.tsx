@@ -58,16 +58,16 @@ export function OrderCard({
                   )}
                 </span>
               </div>
-              {milkLabel && (
+              {milkLabel ? (
                 <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
                   {milkLabel}
                 </div>
-              )}
-              {o.addons.length > 0 && (
+              ) : null}
+              {o.addons.length > 0 ? (
                 <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
                   +{o.addons.map((a) => a.name).join(", ")}
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

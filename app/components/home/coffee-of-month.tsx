@@ -41,11 +41,11 @@ export function CoffeeOfMonth() {
                 Order one →
               </Button>
             </Link>
-            {bean && (
+            {bean ? (
               <span className="font-sans text-[13.5px] text-[#9fc6bf]">
                 Made with this week&apos;s bean, {bean.name}
               </span>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

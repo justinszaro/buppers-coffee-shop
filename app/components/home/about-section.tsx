@@ -56,7 +56,7 @@ export function AboutSection() {
           <p className="font-sans text-[16.5px] leading-[1.7] text-ink-soft m-0 mb-8 max-w-[480px]">
             Buppers is a coffee bar tucked down a flight of basement stairs,
             started by a pair of stuffed animals who refused to leave the
-            counter. One bean on the bar, one seasonal drink, and a strict
+            counter. One bean on the bar, one special drink, and a strict
             no-rush policy.
           </p>
 

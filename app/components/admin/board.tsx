@@ -60,11 +60,11 @@ export function Board({
             </div>
 
             <div className={cn("flex flex-col gap-3", key === "complete" && "opacity-[0.62]")}>
-              {list.length === 0 && (
+              {list.length === 0 ? (
                 <div className="font-sans text-[12.5px] text-buppers-muted text-center py-6">
                   —
                 </div>
-              )}
+              ) : null}
               {list.slice(0, key === "complete" ? 4 : 20).map((o) => (
                 <OrderCard
                   key={o.orderId}

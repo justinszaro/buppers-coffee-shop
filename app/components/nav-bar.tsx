@@ -46,9 +46,9 @@ export function NavBar({ active }: NavBarProps) {
               )}
             >
               {l.label}
-              {active === l.id && (
+              {active === l.id ? (
                 <span className="absolute left-0 right-0 block h-0.5 bg-teal -bottom-6" />
-              )}
+              ) : null}
             </Link>
           ))}
           <Link to="/order" className="no-underline">

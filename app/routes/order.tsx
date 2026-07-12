@@ -90,7 +90,7 @@ export default function Order() {
       </div>
 
       {/* Customizer modal */}
-      {active && (
+      {active ? (
         <Customizer
           drink={active}
           milkOptions={milkOptions}
@@ -102,7 +102,7 @@ export default function Order() {
             setActive(null)
           }}
         />
-      )}
+      ) : null}
 
       <Footer />
     </div>

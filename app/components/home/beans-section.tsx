@@ -69,13 +69,13 @@ export function BeansSection() {
               From {currentBean.roaster}
             </div>
 
-            {currentBean.description && (
+            {currentBean.description ? (
               <p className="font-sans text-base leading-[1.65] text-ink-soft m-0 mb-[22px] max-w-[480px]">
                 {currentBean.description}
               </p>
-            )}
+            ): null}
 
-            {notes.length > 0 && (
+            {notes.length > 0 ? (
               <div className="flex gap-2 flex-wrap mb-[26px]">
                 {notes.map((n) => (
                   <span
@@ -86,7 +86,7 @@ export function BeansSection() {
                   </span>
                 ))}
               </div>
-            )}
+            ) : null}
 
           </div>
         </div>

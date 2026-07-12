@@ -1,4 +1,4 @@
-import { Coffee, Snowflake } from "lucide-react"
+import { Coffee, Snowflake, Sparkle } from "lucide-react"
 import { useState } from "react"
 import { cn } from "~/lib/utils"
 import { Button } from "~/components/ui/button"
@@ -101,13 +101,13 @@ export function Customizer({
         {/* Header */}
         <DialogHeader className="flex-shrink-0 flex-row items-start justify-between space-y-0 border-b border-line px-7 pt-[26px] pb-5">
           <div>
-            {drink.featured && (
+            {drink.featured ? (
               <div className="mb-2">
                 <Badge className="h-auto rounded-full border-transparent bg-[#f7e3e1] px-[10px] py-[4px] text-[11.5px] font-semibold tracking-[0.06em] whitespace-nowrap text-red-deep uppercase">
-                  Seasonal
+                  <Sparkle />
                 </Badge>
               </div>
-            )}
+            ) : null}
             <DialogTitle className="font-heading text-[26px] leading-tight font-bold tracking-[-0.02em] text-ink">
               {drink.name}
             </DialogTitle>
@@ -137,7 +137,7 @@ export function Customizer({
             </FieldLabel>
           ) : null}
 
-          {milkOptions.length > 0 && (
+          {milkOptions.length > 0 ? (
             <FieldLabel label="Milk">
               <div className="flex flex-wrap gap-[10px]">
                 {milkOptions.map((m) => (
@@ -151,7 +151,7 @@ export function Customizer({
                 ))}
               </div>
             </FieldLabel>
-          )}
+          ) : null}
 
           <FieldLabel label="Add-ons">
             <div className="flex flex-wrap gap-[10px]">
