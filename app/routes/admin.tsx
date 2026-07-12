@@ -18,7 +18,7 @@ export function meta() {
 }
 
 export default function Admin() {
-  const { data: orders, isFetching, mutator } = useOrders({ $sort: { createdAt: -1 }, $limit: 200 })
+  const { data: orders = [], isFetching, mutator } = useOrders({ $sort: { createdAt: -1 }, $limit: 200 })
 
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
