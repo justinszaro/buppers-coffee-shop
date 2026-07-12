@@ -1,6 +1,7 @@
 import { Badge as ShadBadge } from "~/components/ui/badge"
 import { cn } from "~/lib/utils"
-import type { BadgeTone } from "~/lib/menu-data"
+
+export type BadgeTone = "teal" | "amber" | "red" | "green" | "grey"
 
 const toneClasses: Record<BadgeTone, string> = {
   teal: "bg-teal-wash text-teal-deep border-transparent",

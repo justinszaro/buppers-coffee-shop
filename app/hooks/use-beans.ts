@@ -25,8 +25,6 @@ export function useBeans(query: Record<string, unknown> = {}) {
     },
   })
 
-  console.log(data)
-
   const mutator = useMutation({
     mutationFn: (bean: { beanId?: number; [key: string]: unknown }) => {
       if (bean.beanId) {

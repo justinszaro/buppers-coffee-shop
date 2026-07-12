@@ -1,5 +1,5 @@
 import { Badge } from "~/components/badge"
-import type { DrinkDef } from "~/lib/menu-data"
+import type { Drink } from "~/hooks/use-drinks"
 
 const drinkThumbClass: Record<string, string> = {
   cream: "drink-thumb-cream",
@@ -21,7 +21,7 @@ export function DrinkCard({
   drink,
   onSelect,
 }: {
-  drink: DrinkDef
+  drink: Drink
   onSelect: () => void
 }) {
   return (
@@ -35,10 +35,10 @@ export function DrinkCard({
           <h3 className="font-heading font-semibold text-[18px] text-ink m-0">
             {drink.name}
           </h3>
-          {drink.seasonal && <Badge tone="red">New</Badge>}
+          {drink.featured && <Badge tone="red">Seasonal</Badge>}
         </div>
         <p className="font-sans text-[13.5px] text-buppers-muted m-0 mb-3 leading-[1.4]">
-          {drink.desc}
+          {drink.description}
         </p>
         <span className="font-sans text-[13px] font-semibold text-teal-deep bg-teal-wash rounded-full px-[14px] py-[6px] whitespace-nowrap">
           Customize +

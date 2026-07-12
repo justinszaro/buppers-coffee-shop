@@ -12,11 +12,10 @@ import {
 } from "~/components/ui/dialog"
 import { Badge } from "~/components/badge"
 import { Stepper } from "~/components/stepper"
-import { SIZES } from "~/lib/menu-data"
-import type { DrinkDef } from "~/lib/menu-data"
 import type { CartItem } from "~/hooks/use-orders"
-
-type Option = { id: string; label: string }
+import type { Drink } from "~/hooks/use-drinks"
+import type { Milk } from "~/hooks/use-milks"
+import type { Addon } from "~/hooks/use-addons"
 
 function Chip({
   active,
@@ -61,24 +60,24 @@ export function Customizer({
   onClose,
   onAdd,
 }: {
-  drink: DrinkDef
-  milkOptions: Option[]
-  extraOptions: Option[]
+  drink: Drink
+  milkOptions: Milk[]
+  extraOptions: Addon[]
   beanName: string
   onClose: () => void
   onAdd: (item: CartItem) => void
 }) {
   const [size, setSize] = useState("M")
-  const [milk, setMilk] = useState(milkOptions[0]?.id ?? "")
-  const [extras, setExtras] = useState<string[]>([])
+  const [milk, setMilk] = useState<number>(milkOptions[0]?.milkId ?? 0)
+  const [extras, setExtras] = useState<number[]>([])
   const [qty, setQty] = useState(1)
 
-  const toggleExtra = (id: string) =>
+  const toggleExtra = (id: number) =>
     setExtras((e) => (e.includes(id) ? e.filter((x) => x !== id) : [...e, id]))
 
   const detail = [
-    drink.milk ? milkOptions.find((m) => m.id === milk)?.label : null,
-    ...extras.map((e) => "+" + extraOptions.find((x) => x.id === e)?.label),
+    milkOptions.length > 0 ? milkOptions.find((m) => m.milkId === milk)?.name : null,
+    ...extras.map((e) => "+" + extraOptions.find((x) => x.addonId === e)?.name),
   ]
     .filter(Boolean)
     .join(" · ")
@@ -92,7 +91,7 @@ export function Customizer({
         {/* Header */}
         <DialogHeader className="px-7 pt-[26px] pb-5 border-b border-line flex-row items-start justify-between space-y-0 flex-shrink-0">
           <div>
-            {drink.seasonal && (
+            {drink.featured && (
               <div className="mb-2">
                 <Badge tone="red">Seasonal</Badge>
               </div>
@@ -101,7 +100,7 @@ export function Customizer({
               {drink.name}
             </DialogTitle>
             <DialogDescription className="font-sans text-[14.5px] text-buppers-muted mt-[6px]">
-              {drink.desc} · Made with {beanName}
+              {drink.description} · Made with {beanName}
             </DialogDescription>
           </div>
           <DialogClose asChild>
@@ -113,12 +112,12 @@ export function Customizer({
 
         {/* Options */}
         <div className="px-7 py-[22px] overflow-y-auto flex-1">
-          {drink.milk && (
+          {milkOptions.length > 0 && (
             <FieldLabel label="Milk">
               <div className="flex flex-wrap gap-[10px]">
                 {milkOptions.map((m) => (
-                  <Chip key={m.id} active={milk === m.id} onClick={() => setMilk(m.id)}>
-                    {m.label}
+                  <Chip key={m.milkId} active={milk === m.milkId} onClick={() => setMilk(m.milkId)}>
+                    {m.name}
                   </Chip>
                 ))}
               </div>
@@ -129,16 +128,16 @@ export function Customizer({
             <div className="flex flex-wrap gap-[10px]">
               {extraOptions.map((x) => (
                 <button
-                  key={x.id}
-                  onClick={() => toggleExtra(x.id)}
+                  key={x.addonId}
+                  onClick={() => toggleExtra(x.addonId)}
                   className={cn(
                     "font-sans text-sm font-medium cursor-pointer rounded-full px-4 py-[9px] border-[1.5px] transition-colors",
-                    extras.includes(x.id)
+                    extras.includes(x.addonId)
                       ? "border-teal bg-teal-wash text-teal-deep"
                       : "border-line bg-white text-ink-soft",
                   )}
                 >
-                  {x.label}
+                  {x.name}
                 </button>
               ))}
             </div>
@@ -153,9 +152,9 @@ export function Customizer({
             onClick={() =>
               onAdd({
                 uid: Math.random().toString(36).slice(2),
-                drinkId: drink.id,
-                milkId: drink.milk ? Number(milk) : null,
-                addonIds: extras.map(Number),
+                drinkId: String(drink.drinkId),
+                milkId: milkOptions.length > 0 ? milk : null,
+                addonIds: extras,
                 name: drink.name,
                 detail,
                 qty,

@@ -10,38 +10,24 @@ import { useDrinks } from "~/hooks/use-drinks"
 import { useBeans } from "~/hooks/use-beans"
 import { useMilks } from "~/hooks/use-milks"
 import { useAddons } from "~/hooks/use-addons"
-import type { DrinkDef } from "~/lib/menu-data"
+import type { Drink } from "~/hooks/use-drinks"
 import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export default function Order() {
   const [items, setItems] = useState<CartItem[]>([])
-  const [active, setActive] = useState<DrinkDef | null>(null)
+  const [active, setActive] = useState<Drink | null>(null)
   const [placed, setPlaced] = useState<PlacedOrder | null>(null)
 
-  const { data: apiDrinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100, $sort: { position: 1 } })
+  const { data: drinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100, $sort: { position: 1 } })
   const { data: beans, isLoading: beansLoading } = useBeans({ active: true, $limit: 1 })
-  const { data: apiMilks, isLoading: milksLoading } = useMilks({ $limit: 100 })
-  const { data: apiAddons, isLoading: addonsLoading } = useAddons({ $limit: 100 })
+  const { data: milks, isLoading: milksLoading } = useMilks({ $limit: 100 })
+  const { data: addons, isLoading: addonsLoading } = useAddons({ $limit: 100 })
 
   const currentBean = beans?.[0]
   const beanName = currentBean?.name ?? "this week's bean"
 
-  const drinks: DrinkDef[] = (apiDrinks ?? []).map((d) => ({
-    id: String(d.drinkId),
-    name: d.name,
-    tone: "cream",
-    milk: true,
-    seasonal: d.featured,
-    desc: d.description,
-  }))
-
-  const milkOptions = (apiMilks ?? [])
-    .filter((m) => m.active)
-    .map((m) => ({ id: String(m.milkId), label: m.name }))
-
-  const extraOptions = (apiAddons ?? [])
-    .filter((a) => a.active)
-    .map((a) => ({ id: String(a.addonId), label: a.name }))
+  const milkOptions = (milks ?? []).filter((m) => m.active)
+  const extraOptions = (addons ?? []).filter((a) => a.active)
 
   const loading = drinksLoading || beansLoading || milksLoading || addonsLoading
 
@@ -84,8 +70,8 @@ export default function Order() {
                   className="bg-white border border-line rounded-[18px] p-5 h-[106px] animate-pulse"
                 />
               ))
-            : drinks.map((d) => (
-                <DrinkCard key={d.id} drink={d} onSelect={() => setActive(d)} />
+            : (drinks ?? []).map((d) => (
+                <DrinkCard key={d.drinkId} drink={d} onSelect={() => setActive(d)} />
               ))}
         </div>
 
