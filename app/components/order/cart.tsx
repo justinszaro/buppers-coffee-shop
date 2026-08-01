@@ -4,30 +4,20 @@ import { Card } from "~/components/ui/card"
 import { Input } from "~/components/ui/input"
 import { Separator } from "~/components/ui/separator"
 import { DuoMark } from "~/components/duo-mark"
-import { Stepper } from "~/components/stepper"
 import { useOrders } from "~/hooks/use-orders"
 import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export function Cart({
   items,
-  setItems,
   onPlaced,
 }: {
   items: CartItem[]
-  setItems: React.Dispatch<React.SetStateAction<CartItem[]>>
   onPlaced: (o: PlacedOrder) => void
 }) {
   const [name, setName] = useState("")
   const [placing, setPlacing] = useState(false)
   const { mutator } = useOrders()
-  const count = items.reduce((s, i) => s + i.qty, 0)
-
-  const setQty = (uid: string, q: number) =>
-    setItems((arr) =>
-      q <= 0
-        ? arr.filter((i) => i.uid !== uid)
-        : arr.map((i) => (i.uid === uid ? { ...i, qty: q } : i)),
-    )
+  const count = items.length
 
   const place = async () => {
     setPlacing(true)
@@ -90,9 +80,6 @@ export function Cart({
                   </div>
                   <div className="font-sans text-[12.5px] text-buppers-muted mt-0.5 leading-[1.4]">
                     {i.detail}
-                  </div>
-                  <div className="mt-[9px]">
-                    <Stepper value={i.qty} onChange={(q) => setQty(i.uid, q)} min={0} />
                   </div>
                 </div>
               </div>

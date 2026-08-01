@@ -86,7 +86,7 @@ export default function Order() {
         </div>
 
         {/* Cart */}
-        <Cart items={items} setItems={setItems} onPlaced={setPlaced} />
+        <Cart items={items} onPlaced={setPlaced} />
       </div>
 
       {/* Customizer modal */}

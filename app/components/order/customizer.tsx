@@ -12,7 +12,6 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog"
 import { Badge } from "~/components/ui/badge"
-import { Stepper } from "~/components/stepper"
 import type { CartItem } from "~/hooks/use-orders"
 import type { Drink } from "~/hooks/use-drinks"
 import type { Milk } from "~/hooks/use-milks"
@@ -76,7 +75,6 @@ export function Customizer({
 }) {
   const [milk, setMilk] = useState<number>(milkOptions[0]?.milkId ?? 0)
   const [extras, setExtras] = useState<number[]>([])
-  const [qty, setQty] = useState(1)
   const [isHot, setIsHot] = useState<boolean>(drink.temp !== "cold")
 
   const toggleExtra = (id: number) =>
@@ -175,7 +173,6 @@ export function Customizer({
 
         {/* Footer */}
         <DialogFooter className="flex-shrink-0 flex-row items-center justify-between border-t border-line bg-paper px-7 pt-[18px] pb-[26px]">
-          <Stepper value={qty} onChange={setQty} />
           <Button
             className="h-auto rounded-full border-none bg-teal px-[26px] py-[14px] text-base font-semibold text-white hover:bg-teal-deep"
             onClick={() =>
@@ -187,11 +184,10 @@ export function Customizer({
                 isHot,
                 name: drink.name,
                 detail,
-                qty,
               })
             }
           >
-            Add {qty} to order
+            Add to order
           </Button>
         </DialogFooter>
       </DialogContent>
