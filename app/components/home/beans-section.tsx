@@ -3,13 +3,13 @@ import { Eyebrow } from "~/components/eyebrow"
 import { Badge } from "~/components/ui/badge"
 import { useBeans } from "~/hooks/use-beans"
 
-function BeanPhoto({ beanId, name }: { beanId: number; name: string }) {
+function BeanPhoto({ name }: { name: string }) {
   const [failed, setFailed] = useState(false)
 
   if (!failed) {
     return (
       <img
-        src={`/assets/botm.jpeg`}
+        src={`https://storage.googleapis.com/justinszarodotcom-public/botm.jpeg`}
         alt={name}
         className="w-full h-full object-cover min-h-[360px]"
         onError={() => setFailed(true)}
@@ -54,7 +54,7 @@ export function BeansSection() {
         <div className="bg-white rounded-[22px] border border-line min-h-[360px] animate-pulse" />
       ) : currentBean ? (
         <div className="bg-white rounded-[22px] border border-line overflow-hidden grid grid-cols-[0.85fr_1.15fr] shadow-[var(--shadow-brand)] max-[860px]:grid-cols-1">
-          <BeanPhoto beanId={currentBean.beanId} name={currentBean.name} />
+          <BeanPhoto name={currentBean.name} />
 
           {/* Bean details */}
           <div className="p-[40px_44px] max-[520px]:p-[28px_24px]">
