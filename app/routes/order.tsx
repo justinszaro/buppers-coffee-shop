@@ -86,7 +86,11 @@ export default function Order() {
         </div>
 
         {/* Cart */}
-        <Cart items={items} onPlaced={setPlaced} />
+        <Cart
+          items={items}
+          onRemove={(uid) => setItems((prev) => prev.filter((i) => i.uid !== uid))}
+          onPlaced={setPlaced}
+        />
       </div>
 
       {/* Customizer modal */}

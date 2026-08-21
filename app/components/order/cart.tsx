@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { X } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { Card } from "~/components/ui/card"
 import { Input } from "~/components/ui/input"
@@ -9,9 +10,11 @@ import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export function Cart({
   items,
+  onRemove,
   onPlaced,
 }: {
   items: CartItem[]
+  onRemove: (uid: string) => void
   onPlaced: (o: PlacedOrder) => void
 }) {
   const [name, setName] = useState("")
@@ -73,7 +76,7 @@ export function Cart({
         ) : (
           items.map((i, idx) => (
             <div key={i.uid}>
-              <div className="px-[22px] py-4 flex gap-3">
+              <div className="px-[22px] py-4 flex gap-3 items-start">
                 <div className="flex-1 min-w-0">
                   <div className="font-heading font-semibold text-[15.5px] text-ink">
                     {i.name}
@@ -82,6 +85,13 @@ export function Cart({
                     {i.detail}
                   </div>
                 </div>
+                <button
+                  onClick={() => onRemove(i.uid)}
+                  className="text-buppers-muted hover:text-ink transition-colors mt-0.5 shrink-0"
+                  aria-label="Remove item"
+                >
+                  <X size={15} />
+                </button>
               </div>
               {idx < items.length - 1 ? <Separator className="bg-line-soft" /> : null}
             </div>
