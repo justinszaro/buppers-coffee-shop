@@ -3,14 +3,14 @@ import { Eyebrow } from "~/components/eyebrow"
 import { Badge } from "~/components/ui/badge"
 import { useBeans } from "~/hooks/use-beans"
 
-function BeanPhoto({ name }: { name: string }) {
+function BeanPhoto({ bean }: { bean: any }) {
   const [failed, setFailed] = useState(false)
 
   if (!failed) {
     return (
       <img
-        src={`https://storage.googleapis.com/justinszarodotcom-public/botm.jpeg`}
-        alt={name}
+        src={`https://storage.googleapis.com/justinszarodotcom-public/${bean.id}.jpeg`}
+        alt={bean.name}
         className="w-full h-full object-cover min-h-[360px]"
         onError={() => setFailed(true)}
       />
@@ -20,7 +20,7 @@ function BeanPhoto({ name }: { name: string }) {
   return (
     <div className="bg-bean-bag flex items-center justify-center min-h-[360px]">
       <span className="font-mono text-[12px] tracking-[0.04em] bg-white/70 px-[11px] py-[5px] rounded-[6px] text-[#9c8a6f]">
-        bag · {name.toLowerCase()}
+        bag · {bean.name.toLowerCase()}
       </span>
     </div>
   )
@@ -54,7 +54,7 @@ export function BeansSection() {
         <div className="bg-white rounded-[22px] border border-line min-h-[360px] animate-pulse" />
       ) : currentBean ? (
         <div className="bg-white rounded-[22px] border border-line overflow-hidden grid grid-cols-[0.85fr_1.15fr] shadow-[var(--shadow-brand)] max-[860px]:grid-cols-1">
-          <BeanPhoto name={currentBean.name} />
+          <BeanPhoto bean={currentBean} />
 
           {/* Bean details */}
           <div className="p-[40px_44px] max-[520px]:p-[28px_24px]">
