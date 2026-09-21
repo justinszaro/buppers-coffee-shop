@@ -9,7 +9,7 @@ function BeanPhoto({ bean }: { bean: any }) {
   if (!failed) {
     return (
       <img
-        src={`https://storage.googleapis.com/justinszarodotcom-public/${bean.id}.jpeg`}
+        src={`https://storage.googleapis.com/justinszarodotcom-public/${bean.beanId}.jpeg`}
         alt={bean.name}
         className="w-full h-full object-cover min-h-[360px]"
         onError={() => setFailed(true)}
