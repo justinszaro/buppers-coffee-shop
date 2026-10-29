@@ -4127,8 +4127,8 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
-  valibot@1.4.1:
-    resolution: {integrity: sha512-klCmFTz2jeDluy9RwX+F884TCiogtdBJ/YaxSx1EOBYXa3NXNWj8kR1jjN8rzluwojJVWWaHJ4r1U5LfICnM3g==}
+  valibot@1.5.0:
+    resolution: {integrity: sha512-nil6AkP2TChWL43Z5uJ6GTxX01CUA+g8LWUM+N/rB9NBbkUMaUsi9PUNzlUPgoKASgmx9f7eGOYpJ04/fSa6FQ==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
@@ -5693,7 +5693,7 @@ snapshots:
       react-router: 8.3.0(react-dom@19.2.6(react@19.3.1))(react@19.3.1)
       semver: 7.8.1
       tinyglobby: 0.2.16
-      valibot: 1.4.1(typescript@6.0.3)
+      valibot: 1.5.0(typescript@6.0.3)
       vite: 8.1.6(@types/node@26.6.5)(esbuild@0.27.7)(jiti@2.7.0)(yaml@2.9.0)
       vite-node: 3.2.4(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)
     optionalDependencies:
@@ -8528,7 +8528,7 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
-  valibot@1.4.1(typescript@6.0.3):
+  valibot@1.5.0(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
