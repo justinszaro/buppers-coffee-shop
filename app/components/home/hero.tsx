@@ -12,7 +12,7 @@ export function Hero() {
 
   const stats: [string, string][] = [
     ["7am–1pm", "Open daily"],
-    [totalDrinks > 0 ? String(totalDrinks) : "—", "Drinks on the menu"],
+    [totalDrinks ? String(totalDrinks) : "—", "Drinks on the menu"],
     [
       drinksServed != null ? drinksServed.toLocaleString() : "—",
       "Drinks served",

@@ -184,6 +184,7 @@ export function Customizer({
                 isHot,
                 name: drink.name,
                 detail,
+                qty: 1,
               })
             }
           >
