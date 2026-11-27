@@ -1,32 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import type { OrderStatus, OrdersData, OrdersPatch, OrdersQuery } from "@justinszaro/api-client"
 import client from "~/lib/feathers-client"
-
-type OrderStatus =
-  | "ordered"
-  | "brewing"
-  | "ready-for-pickup"
-  | "complete"
-
-interface OrderAddon {
-  addonId: number
-  name: string
-}
-
-export interface ApiOrder {
-  orderId: number
-  drinkId: number
-  milkId: number | null
-  addons: OrderAddon[]
-  name: string
-  status: OrderStatus
-  isHot: boolean
-  createdAt: string
-  updatedAt: string
-}
 
 export interface CartItem {
   uid: string
-  drinkId: string
+  drinkId: number
   milkId: number | null
   addonIds: number[]
   isHot: boolean
@@ -41,14 +19,14 @@ export interface PlacedOrder {
   items: { name: string; detail: string; qty: number }[]
 }
 
-export const STATUS: Record<string, { label: string; tone: string; next: string | null }> = {
+export const STATUS: Record<OrderStatus, { label: string; tone: string; next: OrderStatus | null }> = {
   ordered: { label: "New", tone: "red", next: "brewing" },
   brewing: { label: "Brewing", tone: "amber", next: "ready-for-pickup" },
   "ready-for-pickup": { label: "Ready", tone: "green", next: "complete" },
   complete: { label: "Picked up", tone: "grey", next: null },
 }
 
-export const ACTION: Record<string, string> = {
+export const ACTION: Partial<Record<OrderStatus, string>> = {
   ordered: "Start brewing →",
   brewing: "Mark ready →",
   "ready-for-pickup": "Hand off →",
@@ -61,25 +39,22 @@ export function timeAgo(t: string) {
   return Math.round(m / 60) + " hr ago"
 }
 
-export function useOrders(query: Record<string, unknown> = {}) {
+export function useOrders(query: OrdersQuery = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["orders", query],
-    queryFn: async () => {
-      const response = await client.service("buppers/orders").find({ query })
-      return response as { data: ApiOrder[]; total: number }
-    },
+    queryFn: () => client.service("buppers/orders").find({ query }),
     refetchInterval: 5000,
   })
 
   const mutator = useMutation({
-    mutationFn: (order: { orderId?: number; [key: string]: unknown }) => {
-      if (order.orderId) {
+    mutationFn: (order: OrdersData | (OrdersPatch & { orderId: number })) => {
+      if ("orderId" in order) {
         const { orderId, ...fields } = order
-        return client.service("buppers/orders").patch(orderId, fields) as Promise<ApiOrder>
+        return client.service("buppers/orders").patch(orderId, fields)
       }
-      return client.service("buppers/orders").create(order) as Promise<ApiOrder>
+      return client.service("buppers/orders").create(order)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -46,7 +46,7 @@ export function RecipeBook() {
             </div>
 
             <ol className="m-0 p-0 list-none flex flex-col gap-[11px]">
-              {drink.recipe.map((step, n) => (
+              {(drink.recipe ?? []).map((step, n) => (
                 <li key={n} className="flex gap-3">
                   <span className="shrink-0 w-[22px] h-[22px] rounded-full bg-teal-dark text-cream font-heading font-bold text-[12px] flex items-center justify-center">
                     {n + 1}

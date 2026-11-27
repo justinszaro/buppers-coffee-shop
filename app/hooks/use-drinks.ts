@@ -1,35 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import type { DrinksData, DrinksPatch, DrinksQuery } from "@justinszaro/api-client"
 import client from "~/lib/feathers-client"
 
-export interface Drink {
-  drinkId: number
-  name: string
-  description: string
-  tone: string
-  temp: 'hot' | 'cold' | null
-  photo?: string
-  recipe: string[]
-  active: boolean
-  featured: boolean
-  position: number
-  createdAt: string
-  updatedAt: string
-}
-
-export function useDrinks(query: Record<string, unknown> = {}) {
+export function useDrinks(query: DrinksQuery = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["drinks", query],
-    queryFn: async () => {
-      const response = await client.service("buppers/drinks").find({ query })
-      return response as { data: Drink[]; total: number }
-    },
+    queryFn: () => client.service("buppers/drinks").find({ query }),
   })
 
   const mutator = useMutation({
-    mutationFn: (drink: { drinkId?: number; [key: string]: unknown }) => {
-      if (drink.drinkId) {
+    mutationFn: (drink: DrinksData | (DrinksPatch & { drinkId: number })) => {
+      if ("drinkId" in drink) {
         const { drinkId, ...fields } = drink
         return client.service("buppers/drinks").patch(drinkId, fields)
       }

@@ -13,9 +13,7 @@ import {
 } from "~/components/ui/dialog"
 import { Badge } from "~/components/ui/badge"
 import type { CartItem } from "~/hooks/use-orders"
-import type { Drink } from "~/hooks/use-drinks"
-import type { Milk } from "~/hooks/use-milks"
-import type { Addon } from "~/hooks/use-addons"
+import type { Addons, Drinks, Milks } from "@justinszaro/api-client"
 
 function Chip({
   active,
@@ -66,9 +64,9 @@ export function Customizer({
   onClose,
   onAdd,
 }: {
-  drink: Drink
-  milkOptions: Milk[]
-  extraOptions: Addon[]
+  drink: Drinks
+  milkOptions: Milks[]
+  extraOptions: Addons[]
   beanName: string
   onClose: () => void
   onAdd: (item: CartItem) => void
@@ -178,7 +176,7 @@ export function Customizer({
             onClick={() =>
               onAdd({
                 uid: Math.random().toString(36).slice(2),
-                drinkId: String(drink.drinkId),
+                drinkId: drink.drinkId,
                 milkId: milkOptions.length > 0 ? milk : null,
                 addonIds: extras,
                 isHot,

@@ -1,28 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import type { AddonsData, AddonsPatch, AddonsQuery } from "@justinszaro/api-client"
 import client from "~/lib/feathers-client"
 
-export interface Addon {
-  addonId: number
-  name: string
-  active: boolean
-  createdAt: string
-  updatedAt: string
-}
-
-export function useAddons(query: Record<string, unknown> = {}) {
+export function useAddons(query: AddonsQuery = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["addons", query],
-    queryFn: async () => {
-      const response = await client.service("buppers/addons").find({ query })
-      return response as { data: Addon[]; total: number }
-    },
+    queryFn: () => client.service("buppers/addons").find({ query }),
   })
 
   const mutator = useMutation({
-    mutationFn: (addon: { addonId?: number; [key: string]: unknown }) => {
-      if (addon.addonId) {
+    mutationFn: (addon: AddonsData | (AddonsPatch & { addonId: number })) => {
+      if ("addonId" in addon) {
         const { addonId, ...fields } = addon
         return client.service("buppers/addons").patch(addonId, fields)
       }

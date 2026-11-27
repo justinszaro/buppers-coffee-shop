@@ -1,6 +1,6 @@
 import { Sparkle } from "lucide-react"
 import { Badge } from "~/components/ui/badge"
-import type { Drink } from "~/hooks/use-drinks"
+import type { Drinks } from "@justinszaro/api-client"
 
 const drinkThumbClass: Record<string, string> = {
   cream: "drink-thumb-cream",
@@ -22,7 +22,7 @@ export function DrinkCard({
   drink,
   onSelect,
 }: {
-  drink: Drink
+  drink: Drinks
   onSelect: () => void
 }) {
   return (

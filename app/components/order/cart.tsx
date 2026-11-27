@@ -29,7 +29,7 @@ export function Cart({
       const results = await Promise.all(
         items.map((item) =>
           mutator.mutateAsync({
-            drinkId: Number(item.drinkId),
+            drinkId: item.drinkId,
             milkId: item.milkId,
             addonIds: item.addonIds,
             isHot: item.isHot,

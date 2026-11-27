@@ -4,7 +4,7 @@ import { Card, CardContent } from "~/components/ui/card"
 import { Button } from "~/components/ui/button"
 import { Badge } from "~/components/ui/badge"
 import { STATUS, ACTION, timeAgo } from "~/hooks/use-orders"
-import type { ApiOrder } from "~/hooks/use-orders"
+import type { Orders } from "@justinszaro/api-client"
 
 const BOARD_LEFT_CLASS: Record<string, string> = {
   ordered: "border-l-[3px] border-l-buppers-red",
@@ -19,7 +19,7 @@ export function OrderCard({
   milkLabel,
   onAdvance,
 }: {
-  o: ApiOrder
+  o: Orders
   drinkLabel: string
   milkLabel: string | null
   onAdvance: () => void
@@ -39,7 +39,7 @@ export function OrderCard({
             #{o.orderId} · {o.name}
           </span>
           <span className="font-sans text-[12px] text-buppers-muted">
-            {timeAgo(o.createdAt)}
+            {o.createdAt ? timeAgo(o.createdAt) : null}
           </span>
         </div>
 
@@ -63,7 +63,7 @@ export function OrderCard({
                   {milkLabel}
                 </div>
               ) : null}
-              {o.addons.length > 0 ? (
+              {o.addons?.length ? (
                 <div className="font-sans text-[11.5px] text-buppers-muted leading-[1.35]">
                   +{o.addons.map((a) => a.name).join(", ")}
                 </div>

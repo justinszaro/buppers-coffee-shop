@@ -10,7 +10,7 @@ import { useDrinks } from "~/hooks/use-drinks"
 import { useBeans } from "~/hooks/use-beans"
 import { useMilks } from "~/hooks/use-milks"
 import { useAddons } from "~/hooks/use-addons"
-import type { Drink } from "~/hooks/use-drinks"
+import type { Drinks } from "@justinszaro/api-client"
 import type { CartItem, PlacedOrder } from "~/hooks/use-orders"
 
 export function meta() {
@@ -25,7 +25,7 @@ export function meta() {
 
 export default function Order() {
   const [items, setItems] = useState<CartItem[]>([])
-  const [active, setActive] = useState<Drink | null>(null)
+  const [active, setActive] = useState<Drinks | null>(null)
   const [placed, setPlaced] = useState<PlacedOrder | null>(null)
 
   const { data: drinks, isLoading: drinksLoading } = useDrinks({ active: true, $limit: 100, $sort: { position: 1 } })

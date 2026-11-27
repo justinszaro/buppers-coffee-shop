@@ -1,33 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import type { BeansData, BeansPatch, BeansQuery } from "@justinszaro/api-client"
 import client from "~/lib/feathers-client"
 
-interface Bean {
-  beanId: number
-  name: string
-  description: string | null
-  roaster: string
-  notes: string
-  roast: string
-  active: boolean
-  onDeck: boolean
-  createdAt: string
-  updatedAt: string
-}
-
-export function useBeans(query: Record<string, unknown> = {}) {
+export function useBeans(query: BeansQuery = {}) {
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["beans", query],
-    queryFn: async () => {
-      const response = await client.service("buppers/beans").find({ query })
-      return response as { data: Bean[]; total: number }
-    },
+    queryFn: () => client.service("buppers/beans").find({ query }),
   })
 
   const mutator = useMutation({
-    mutationFn: (bean: { beanId?: number; [key: string]: unknown }) => {
-      if (bean.beanId) {
+    mutationFn: (bean: BeansData | (BeansPatch & { beanId: number })) => {
+      if ("beanId" in bean) {
         const { beanId, ...fields } = bean
         return client.service("buppers/beans").patch(beanId, fields)
       }

@@ -5,7 +5,7 @@ import { StatCard } from "~/components/admin/stat-card"
 import { Board } from "~/components/admin/board"
 import { RecipeBook } from "~/components/admin/recipe-book"
 import { useOrders, STATUS } from "~/hooks/use-orders"
-import type { ApiOrder } from "~/hooks/use-orders"
+import type { Orders } from "@justinszaro/api-client"
 
 export function meta() {
   return [
@@ -23,12 +23,12 @@ export default function Admin() {
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
   const todayStr = startOfDay.toISOString()
-  const today = orders.filter((o) => o.createdAt >= todayStr)
+  const today = orders.filter((o) => (o.createdAt ?? "") >= todayStr)
   const active = orders.filter((o) => o.status === "ordered" || o.status === "brewing").length
   const ready = orders.filter((o) => o.status === "ready-for-pickup").length
   const completed = today.filter((o) => o.status === "complete").length
 
-  const doAdvance = (order: ApiOrder) => {
+  const doAdvance = (order: Orders) => {
     const next = STATUS[order.status]?.next
     if (next) mutator.mutate({ orderId: order.orderId, status: next })
   }

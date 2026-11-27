@@ -2,16 +2,16 @@ import { cn } from "~/lib/utils"
 import { OrderCard } from "~/components/admin/order-card"
 import { useDrinks } from "~/hooks/use-drinks"
 import { useMilks } from "~/hooks/use-milks"
-import type { ApiOrder } from "~/hooks/use-orders"
+import type { OrderStatus, Orders } from "@justinszaro/api-client"
 
-const COLS: [string, string][] = [
+const COLS: [OrderStatus, string][] = [
   ["ordered", "New"],
   ["brewing", "Brewing"],
   ["ready-for-pickup", "Ready for pickup"],
   ["complete", "Picked up"],
 ]
 
-const DOT_CLASS: Record<string, string> = {
+const DOT_CLASS: Record<OrderStatus, string> = {
   ordered: "bg-buppers-red",
   brewing: "bg-amber",
   "ready-for-pickup": "bg-buppers-green",
@@ -22,8 +22,8 @@ export function Board({
   orders,
   onAdvance,
 }: {
-  orders: ApiOrder[]
-  onAdvance: (order: ApiOrder) => void
+  orders: Orders[]
+  onAdvance: (order: Orders) => void
 }) {
   const { data: drinks } = useDrinks({ $limit: 100 })
   const { data: milks } = useMilks({ $limit: 100 })
@@ -31,7 +31,7 @@ export function Board({
   const drinkLabel = (drinkId: number) =>
     drinks?.find((d) => d.drinkId === drinkId)?.name ?? `Drink #${drinkId}`
 
-  const milkLabel = (milkId: number | null) =>
+  const milkLabel = (milkId: number | null | undefined) =>
     milkId ? (milks?.find((m) => m.milkId === milkId)?.name ?? null) : null
 
   return (
@@ -39,7 +39,7 @@ export function Board({
       {COLS.map(([key, label]) => {
         const list = orders
           .filter((o) => o.status === key)
-          .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+          .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
 
         return (
           <div

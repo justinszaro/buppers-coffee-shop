@@ -87,6 +87,7 @@ Routes are declared in `app/routes.ts` (config-based, not file-based). Add new r
 
 - `strict: true` is enabled — no `any`, no `@ts-ignore` without justification.
 - Use `verbatimModuleSyntax` — write `import type` when importing types only.
+- API types (`Drinks`, `Orders`, `OrderStatus`, …) come from `@justinszaro/api-client`, generated from feathers-api's schemas. Import them directly where they're used; never redeclare, alias or re-export them.
 - React Router auto-generates types in `.react-router/types/`; run `pnpm typecheck` to regenerate after adding routes.
 
 ## API Environment

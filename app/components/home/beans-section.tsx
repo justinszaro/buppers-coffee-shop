@@ -2,8 +2,9 @@ import { useState } from "react"
 import { Eyebrow } from "~/components/eyebrow"
 import { Badge } from "~/components/ui/badge"
 import { useBeans } from "~/hooks/use-beans"
+import type { Beans } from "@justinszaro/api-client"
 
-function BeanPhoto({ bean }: { bean: any }) {
+function BeanPhoto({ bean }: { bean: Beans }) {
   const [failed, setFailed] = useState(false)
 
   if (!failed) {
