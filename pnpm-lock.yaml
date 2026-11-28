@@ -18,8 +18,8 @@ importers:
         specifier: ^5.3.0
         version: 5.3.0
       '@justinszaro/api-client':
-        specifier: ^0.1.0
-        version: 0.1.0(knex@3.3.0)(typescript@6.0.3)
+        specifier: ^0.2.0
+        version: 0.2.0(knex@3.3.0)(typescript@6.0.3)
       '@react-router/node':
         specifier: 8.5.2
         version: 8.5.2(react-router@8.5.2(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@6.0.3)
@@ -607,8 +607,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@justinszaro/api-client@0.1.0':
-    resolution: {integrity: sha512-VUMXs6MYO1FZL3yA2Vq6ujX3415n96csoxXrfOD+nriiBwofpv5EdGGU7grS9KcQderB8sB01efaQ8+OEHw7tQ==, tarball: https://npm.pkg.github.com/download/@justinszaro/api-client/0.1.0/13f648531a5e7188388342cfd862c6dfdec90424}
+  '@justinszaro/api-client@0.2.0':
+    resolution: {integrity: sha512-M2wUHIZrGOZFlzdzGNTha2WIqQtXl6FGJX1TY465G41zKd/FCUP33bbzBfczvuHB03wd3phkBEEGBlnmDWM4Rw==, tarball: https://npm.pkg.github.com/download/@justinszaro/api-client/0.2.0/fbf62a6a84ff21aed4c7b213d889265d1535bb3c}
 
   '@keyv/bigmap@1.3.1':
     resolution: {integrity: sha512-WbzE9sdmQtKy8vrNPa9BRnwZh5UF4s1KTmSK0KUVLo3eff5BlQNNWDnFOouNpKfPKDnms9xynJjsMYjMaT/aFQ==}
@@ -5111,7 +5111,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@justinszaro/api-client@0.1.0(knex@3.3.0)(typescript@6.0.3)':
+  '@justinszaro/api-client@0.2.0(knex@3.3.0)(typescript@6.0.3)':
     dependencies:
       '@casl/ability': 7.1.3
       '@feathersjs/authentication-client': 5.0.51(typescript@6.0.3)

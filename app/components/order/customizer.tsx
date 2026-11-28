@@ -92,7 +92,7 @@ export function Customizer({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="flex max-h-[90vh] max-w-[540px] flex-col gap-0 rounded-[22px] border-line p-0 shadow-[0_30px_80px_rgba(0,0,0,.3)] ring-0"
+        className="flex max-h-[90vh] max-w-[540px] flex-col gap-0 rounded-t-[22px] border-line p-0 shadow-[0_30px_80px_rgba(0,0,0,.3)] ring-0"
       >
         {/* Header */}
         <DialogHeader className="flex-shrink-0 flex-row items-start justify-between space-y-0 border-b border-line px-7 pt-[26px] pb-5">
@@ -149,28 +149,30 @@ export function Customizer({
             </FieldLabel>
           ) : null}
 
-          <FieldLabel label="Add-ons">
-            <div className="flex flex-wrap gap-[10px]">
-              {extraOptions.map((x) => (
-                <button
-                  key={x.addonId}
-                  onClick={() => toggleExtra(x.addonId)}
-                  className={cn(
-                    "cursor-pointer rounded-full border-[1.5px] px-4 py-[9px] font-sans text-sm font-medium transition-colors",
-                    extras.includes(x.addonId)
-                      ? "border-teal bg-teal-wash text-teal-deep"
-                      : "border-line bg-white text-ink-soft"
-                  )}
-                >
-                  {x.name}
-                </button>
-              ))}
-            </div>
-          </FieldLabel>
+          {drink.canAddOn ? (
+            <FieldLabel label="Add-ons">
+              <div className="flex flex-wrap gap-[10px]">
+                {extraOptions.map((x) => (
+                  <button
+                    key={x.addonId}
+                    onClick={() => toggleExtra(x.addonId)}
+                    className={cn(
+                      "cursor-pointer rounded-full border-[1.5px] px-4 py-[9px] font-sans text-sm font-medium transition-colors",
+                      extras.includes(x.addonId)
+                        ? "border-teal bg-teal-wash text-teal-deep"
+                        : "border-line bg-white text-ink-soft"
+                    )}
+                  >
+                    {x.name}
+                  </button>
+                ))}
+              </div>
+            </FieldLabel>
+          ) : null}
         </div>
 
         {/* Footer */}
-        <DialogFooter className="flex-shrink-0 flex-row items-center justify-between border-t border-line bg-paper px-7 pt-[18px] pb-[26px]">
+        <DialogFooter className="flex-shrink-0 flex-row items-center justify-between border-t border-line bg-paper px-7 pt-[18px] pb-[26px] rounded-b-[22px]">
           <Button
             className="h-auto rounded-full border-none bg-teal px-[26px] py-[14px] text-base font-semibold text-white hover:bg-teal-deep"
             onClick={() =>
